@@ -25,8 +25,10 @@ Welcome to my GitHub profile! I am passionate about financial markets, blockchai
 - 🐦 [Twitter/X](https://your-twitter-profile-link)
 - 💬 Ask me about: **Crypto, Trading Strategies, and Python**
 
-La cripto moneda funciona demasiado para conseguir ganancias al subir y bajar el mercado 
+
 <img width="444" height="450" alt="image" src="https://github.com/user-attachments/assets/fa90406e-10c0-4559-914e-ebce0d8c9b81" />
+
+La cripto moneda funciona demasiado para conseguir ganancias al subir y bajar el mercado 📊
 
 <!--
 **JohanSebastianCespedes/JohanSebastianCespedes** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
