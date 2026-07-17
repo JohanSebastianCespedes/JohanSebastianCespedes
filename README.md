@@ -25,11 +25,11 @@ Welcome to my GitHub profile! I am passionate about financial markets, blockchai
 - 🐦 [Twitter/X](https://your-twitter-profile-link)
 - 💬 Ask me about: **Crypto, Trading Strategies, and Python**
 
-###La cripto moneda funciona demasiado para conseguir ganancias al subir y bajar el mercado 📊
+### La cripto moneda funciona demasiado para conseguir ganancias al subir y bajar el mercado 📊
 
 <img width="444" height="450" alt="image" src="https://github.com/user-attachments/assets/fa90406e-10c0-4559-914e-ebce0d8c9b81" />
 
-###APP recomendada para trading y confiable seria: BINANCE
+### APP recomendada para trading y confiable seria: BINANCE
 
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/f20b9c39-7cf8-404f-8280-677b00d2b4a8" />
 
