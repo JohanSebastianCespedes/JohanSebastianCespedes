@@ -1,10 +1,34 @@
-## Hi there 👋
-My name is sebastian
+## Hi there, I'm Sebastian 👋
 
-<img width="738" height="414" alt="image" src="https://github.com/user-attachments/assets/0a0deaec-345f-4bf4-8eea-2626530c4697" />
+🚀 **Crypto Trader & Developer**
 
-MY CAR FAVORITE IS THIS
+Welcome to my GitHub profile! I am passionate about financial markets, blockchain technology, and building automated trading strategies.
 
+---
+
+### 📊 Market Interests & Expertise
+- **Cryptocurrencies:** Bitcoin (BTC), Ethereum (ETH), and Altcoin analysis.
+- **Trading Style:** Algorithmic trading, technical analysis, and risk management.
+- **Tools & Tech:** Python (Pandas, NumPy), Pine Script (TradingView), and Crypto Exchange APIs.
+
+---
+
+### 🛠️ What I'm Working On
+- 📈 Developing automated trading bots.
+- 📉 Backtesting strategies using historical crypto data.
+- 🧪 Exploring decentralized finance (DeFi) protocols.
+
+---
+
+### 📬 Connect with Me
+- 💼 [LinkedIn](https://your-linkedin-profile-link)
+- 🐦 [Twitter/X](https://your-twitter-profile-link)
+- 💬 Ask me about: **Crypto, Trading Strategies, and Python**
+
+---
+
+### ⚡ Fun Fact
+"The trend is your friend until it bends at the end." 📈
 <!--
 **JohanSebastianCespedes/JohanSebastianCespedes** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 
