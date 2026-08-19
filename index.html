@@ -210,7 +210,7 @@
 
   <hr>
 <img src="BITCOIN 2.jpg" width="1000" height="600" alt="Bitcoin Image">
- 
+
   <div class="section-card">
     <h3>📊 Market Interests & Expertise</h3>
     <ul>
@@ -239,7 +239,7 @@
 
   <hr>
 <img src="trading.jpg" width="100%" alt="Binance Image">
- 
+  
   <h2>📉 Conceptos Clave del Trading con Criptomonedas</h2>
   <p>El trading de criptomonedas consiste en especular sobre los movimientos de precio de los activos digitales mediante el estudio de la oferta y la demanda.</p>
 
@@ -316,7 +316,7 @@
     <canvas id="cryptoChart"></canvas>
   </div>
 
-  <!-- NUEVO: Diagrama de Barras -->
+  <!-- Diagrama de Barras -->
   <h2>📊 Comparativa: Capitalización de Mercado</h2>
   <p>Comparación del tamaño del mercado entre las 3 principales criptomonedas (Expresado en Billones de USD).</p>
   <div class="section-card">
@@ -407,11 +407,11 @@
         labels: ['Bitcoin (BTC)', 'Ethereum (ETH)', 'Solana (SOL)'],
         datasets: [{
           label: 'Market Cap (Billones USD)',
-          data: [1300, 420, 75], // Datos aproximados de capitalización
+          data: [1300, 420, 75],
           backgroundColor: [
-            'rgba(240, 185, 11, 0.8)', // BTC
-            'rgba(98, 126, 234, 0.8)', // ETH
-            'rgba(20, 241, 149, 0.8)'  // SOL
+            'rgba(240, 185, 11, 0.8)',
+            'rgba(98, 126, 234, 0.8)',
+            'rgba(20, 241, 149, 0.8)'
           ],
           borderColor: [
             '#f0b90b',
@@ -432,15 +432,14 @@
       }
     });
 
-    // 3. Función ECharts para Medidores de Compra/Venta
-    function createGauge(elementId, value, title, mainColor, colors) {
+    // 3. Función ECharts para Medidores de Compra/Venta Corregida
+    function createGauge(elementId, value, mainColor, colors) {
       const chartDom = document.getElementById(elementId);
       const myChart = echarts.init(chartDom, 'dark');
       
       const option = {
         backgroundColor: 'transparent',
         series: [{
-          name: title,
           type: 'gauge',
           startAngle: 180,
           endAngle: 0,
@@ -473,13 +472,13 @@
             }
           },
           detail: {
-            fontSize: 24,
-            offsetCenter: [0, '20%'],
+            fontSize: 22,
+            offsetCenter: [0, '25%'],
             valueAnimation: true,
             formatter: '{value}%',
             color: mainColor
           },
-          data: [{ value: value, name: title }]
+          data: [{ value: value }]
         }]
       };
       
@@ -487,15 +486,14 @@
       window.addEventListener('resize', () => myChart.resize());
     }
 
-    // Inicializar Medidor COMPRA
-    createGauge('buyGauge', 78, 'Presión Compradora', '#0ecb81', [
+    // Inicializar Medidores
+    createGauge('buyGauge', 78, '#0ecb81', [
       [0.3, '#30363d'],
       [0.7, '#f0b90b'],
       [1.0, '#0ecb81']
     ]);
 
-    // Inicializar Medidor VENTA
-    createGauge('sellGauge', 22, 'Presión Vendedora', '#f6465d', [
+    createGauge('sellGauge', 22, '#f6465d', [
       [0.3, '#30363d'],
       [0.7, '#f0b90b'],
       [1.0, '#f6465d']
