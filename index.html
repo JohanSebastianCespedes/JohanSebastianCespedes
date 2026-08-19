@@ -79,7 +79,6 @@
       color: #79c0ff;
     }
 
-    /* Cards interactivos */
     .section-card {
       background-color: var(--card-bg);
       border: 1px solid var(--border-color);
@@ -95,7 +94,6 @@
       transform: translateY(-2px);
     }
 
-    /* Botones de Operación */
     .btn-container {
       display: flex;
       gap: 15px;
@@ -119,7 +117,6 @@
     .btn-gold { background-color: var(--accent-gold); color: #000; }
     .btn:hover { transform: scale(1.03); filter: brightness(1.1); }
 
-    /* Tablas pro */
     table {
       width: 100%;
       border-collapse: collapse;
@@ -141,7 +138,6 @@
 
     tr:nth-child(even) { background-color: rgba(255,255,255,0.02); }
 
-    /* Pestanias de Gráficas */
     .crypto-tabs {
       display: flex;
       gap: 10px;
@@ -165,7 +161,6 @@
       color: var(--accent-gold);
     }
 
-    /* Contenedores para Imágenes y GIFs futuros */
     .media-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -187,7 +182,6 @@
       border-color: var(--accent-gold);
     }
 
-    /* Contenedores de Velocímetros Dobles (Compra y Venta) */
     .gauge-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -209,13 +203,14 @@
 </head>
 <body>
 
-
+  <!-- Encabezado Principal -->
   <h1>🪙 Sebastián | Cripto Trading & Análisis de Mercados Digitales 📈</h1>
   <p><strong>🚀 Crypto Trader & Developer</strong></p>
   <p>Welcome, I am passionate about financial markets, blockchain technology, and building automated trading strategies.</p>
-<img src="BITCOIN 2.jpg" width="1000" height="600" alt="Bitcoin Image">
+
   <hr>
-  
+<img src="BITCOIN 2.jpg" width="1000" height="600" alt="Bitcoin Image">
+ 
   <div class="section-card">
     <h3>📊 Market Interests & Expertise</h3>
     <ul>
@@ -243,7 +238,7 @@
   </ul>
 
   <hr>
-
+<img src="trading.jpg" width="100%" alt="Binance Image">
  
   <h2>📉 Conceptos Clave del Trading con Criptomonedas</h2>
   <p>El trading de criptomonedas consiste en especular sobre los movimientos de precio de los activos digitales mediante el estudio de la oferta y la demanda.</p>
@@ -270,8 +265,7 @@
 
   <hr>
 
-<img src="trading.jpg" width="100%" alt="Binance Image">
-  
+  <!-- Tabla de Activos -->
   <h2>📊 Matriz de Análisis de Activos Principales</h2>
   <table>
     <thead>
@@ -310,18 +304,8 @@
 
   <hr>
 
-  <!-- Indicadores Técnicos -->
-  <h2>⚙️ Indicadores Técnicos y Herramientas</h2>
-  <pre>
-[ Indicadores ]  ---> RSI (Fuerza Relativa) | MACD | Soportes y Resistencias | Fibonacci
-[ On-Chain ]     ---> Flujo de Exchanges | MVRV | Métricas de Minería | Direcciones Activas
-[ Plataformas ]  ---> TradingView | Binance | CoinMarketCap | Glassnode
-  </pre>
-
-  <hr>
-
-  <!-- Gráficas de Precio -->
-  <h2>📈 Gráficas del Mercado (Bitcoin, Ethereum, Solana)</h2>
+  <!-- Gráficas de Precio (Líneas) -->
+  <h2>📈 Evolución del Precio (Bitcoin, Ethereum, Solana)</h2>
   <div class="crypto-tabs">
     <button class="tab-btn active" onclick="switchCrypto('btc')">Bitcoin (BTC)</button>
     <button class="tab-btn" onclick="switchCrypto('eth')">Ethereum (ETH)</button>
@@ -330,6 +314,13 @@
 
   <div class="section-card">
     <canvas id="cryptoChart"></canvas>
+  </div>
+
+  <!-- NUEVO: Diagrama de Barras -->
+  <h2>📊 Comparativa: Capitalización de Mercado</h2>
+  <p>Comparación del tamaño del mercado entre las 3 principales criptomonedas (Expresado en Billones de USD).</p>
+  <div class="section-card">
+    <canvas id="barChart"></canvas>
   </div>
 
   <hr>
@@ -351,7 +342,7 @@
 
   <!-- Scripts JavaScript -->
   <script>
-    // 1. Chart.js - Evolución del precio
+    // 1. Chart.js - Evolución del precio (Líneas)
     const cryptoData = {
       btc: {
         label: 'Precio Bitcoin (BTC) - USD',
@@ -408,7 +399,40 @@
       currentChart.update();
     }
 
-    // 2. Función generadora de ECharts para Medidor de Compra/Venta
+    // 2. Chart.js - Diagrama de Barras (Capitalización)
+    const ctxBar = document.getElementById('barChart').getContext('2d');
+    new Chart(ctxBar, {
+      type: 'bar',
+      data: {
+        labels: ['Bitcoin (BTC)', 'Ethereum (ETH)', 'Solana (SOL)'],
+        datasets: [{
+          label: 'Market Cap (Billones USD)',
+          data: [1300, 420, 75], // Datos aproximados de capitalización
+          backgroundColor: [
+            'rgba(240, 185, 11, 0.8)', // BTC
+            'rgba(98, 126, 234, 0.8)', // ETH
+            'rgba(20, 241, 149, 0.8)'  // SOL
+          ],
+          borderColor: [
+            '#f0b90b',
+            '#627eea',
+            '#14f195'
+          ],
+          borderWidth: 1,
+          borderRadius: 4
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { labels: { color: '#c9d1d9' } } },
+        scales: {
+          x: { ticks: { color: '#c9d1d9', font: { weight: 'bold' } }, grid: { display: false } },
+          y: { ticks: { color: '#8b949e' }, grid: { color: '#30363d' } }
+        }
+      }
+    });
+
+    // 3. Función ECharts para Medidores de Compra/Venta
     function createGauge(elementId, value, title, mainColor, colors) {
       const chartDom = document.getElementById(elementId);
       const myChart = echarts.init(chartDom, 'dark');
@@ -463,15 +487,15 @@
       window.addEventListener('resize', () => myChart.resize());
     }
 
-    // Inicializar Medidor de COMPRA (Verde)
-    createGauge('buyGauge', 78,'#0ecb81', [
+    // Inicializar Medidor COMPRA
+    createGauge('buyGauge', 78, 'Presión Compradora', '#0ecb81', [
       [0.3, '#30363d'],
       [0.7, '#f0b90b'],
       [1.0, '#0ecb81']
     ]);
 
-    // Inicializar Medidor de VENTA (Rojo)
-    createGauge('sellGauge', 22,'#f6465d', [
+    // Inicializar Medidor VENTA
+    createGauge('sellGauge', 22, 'Presión Vendedora', '#f6465d', [
       [0.3, '#30363d'],
       [0.7, '#f0b90b'],
       [1.0, '#f6465d']
