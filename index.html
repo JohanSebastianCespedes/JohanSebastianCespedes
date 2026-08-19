@@ -18,6 +18,8 @@
       --accent-green: #0ecb81;
       --accent-red: #f6465d;
       --accent-gold: #f0b90b;
+      --accent-eth: #627eea;
+      --accent-sol: #14f195;
     }
 
     body {
@@ -117,14 +119,7 @@
       font-weight: bold;
     }
 
-    img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 6px;
-      margin: 15px 0;
-    }
-
-
+    /* Estilos de botones de acción */
     .btn-container {
       display: flex;
       gap: 15px;
@@ -146,6 +141,30 @@
     .btn-gold { background-color: var(--accent-gold); color: #000; }
     .btn:hover { opacity: 0.85; }
 
+    /* Estilos para el selector de criptomonedas */
+    .crypto-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .tab-btn {
+      padding: 8px 16px;
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-color);
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.2s, border-color 0.2s;
+    }
+
+    .tab-btn.active {
+      border-color: var(--accent-gold);
+      background-color: #21262d;
+    }
+
+    /* Contenedor de gráficas JS */
     .chart-box {
       background-color: var(--card-bg);
       border: 1px solid var(--border-color);
@@ -157,7 +176,7 @@
 </head>
 <body>
 
-
+  <!-- Encabezado Principal -->
   <h1>🪙 Sebastián | Cripto Trading & Análisis de Mercados Digitales 📈</h1>
   <p><strong>🚀 **Crypto Trader & Developer**</strong></p>
   <p>Welcome to my GitHub profile! I am passionate about financial markets, blockchain technology, and building automated trading strategies.</p>
@@ -174,6 +193,7 @@
 
   <hr>
 
+  <!-- Sección: What I'm Working On -->
   <h3>💻 What I'm Working On</h3>
   <ul>
     <li>🤖 Developing automated trading bots.</li>
@@ -183,7 +203,7 @@
 
   <hr>
 
-
+  <!-- Sección: Connect with Me -->
   <h3>🌐 Connect with Me</h3>
   <ul>
     <li>💼 <a href="https://your-linkedin-profile-link" target="_blank">LinkedIn</a></li>
@@ -191,11 +211,9 @@
     <li>💬 Ask me about: <strong>Crypto, Trading Strategies, and Python</strong></li>
   </ul>
 
- <img src="trading.jpg" width="100%" alt="Binance Image">
-  
   <hr>
 
-
+  <!-- Sección: Conceptos Clave -->
   <h2>📉 Conceptos Clave del Trading con Criptomonedas</h2>
   <p>El trading de criptomonedas consiste en especular sobre los movimientos de precio de los activos digitales mediante el estudio de la oferta y la demanda.</p>
 
@@ -215,7 +233,7 @@
     <li><strong>Gestión por Operación:</strong> No arriesgar más del 1% al 2% del capital total del portafolio por posición.</li>
   </ul>
 
-
+  <!-- Botones de Acción -->
   <div class="btn-container">
     <button class="btn btn-buy">Comprar (Long)</button>
     <button class="btn btn-sell">Vender (Short)</button>
@@ -224,9 +242,8 @@
 
   <hr>
 
+  <!-- Sección: Tabla de Análisis -->
   <h2>📊 Matriz de Análisis de Activos Principales</h2>
-
-   <img src="BITCOIN 2.jpg" width="1000" height="1000" alt="Bitcoin Image">
   
   <table>
     <thead>
@@ -254,17 +271,18 @@
         <td>Activo de utilidad para ecosistemas inteligentes</td>
       </tr>
       <tr>
-        <td><strong>Altcoins</strong></td>
-        <td><code>ALT</code></td>
-        <td>Técnico & Liquidez</td>
-        <td>RSI, MACD, Medias Móviles (EMA 20/200), VWAP</td>
-        <td>Captura de volatilidad y crecimiento rápido</td>
+        <td><strong>Solana</strong></td>
+        <td><code>SOL</code></td>
+        <td>Técnico & Alta Velocidad</td>
+        <td>RSI, MACD, Medias Móviles, TPS Network</td>
+        <td>Captura de volatilidad y ecosistema DApps</td>
       </tr>
     </tbody>
   </table>
 
   <hr>
 
+  <!-- Sección: Indicadores -->
   <h2>⚙️ Indicadores Técnicos y Herramientas de Análisis</h2>
 
   <pre>
@@ -275,27 +293,67 @@
 
   <hr>
 
+  <!-- Sección: Gráficas dinámicas múltiples -->
+  <h2>📈 Gráficas del Mercado (Bitcoin, Ethereum, Solana)</h2>
+  <p>Análisis visual del rendimiento y tendencia de las principales criptomonedas del mercado 📊</p>
 
-  <h2>📈 Gráficas del Mercado y Evolución de Bitcoin</h2>
-  <p>La criptomoneda funciona demasiado para conseguir ganancias al subir y bajar el mercado 📊</p>
+  <div class="crypto-tabs">
+    <button class="tab-btn active" onclick="switchCrypto('btc')">Bitcoin (BTC)</button>
+    <button class="tab-btn" onclick="switchCrypto('eth')">Ethereum (ETH)</button>
+    <button class="tab-btn" onclick="switchCrypto('sol')">Solana (SOL)</button>
+  </div>
 
   <div class="chart-box">
-    <canvas id="btcChart"></canvas>
+    <canvas id="cryptoChart"></canvas>
   </div>
 
   <hr>
 
+  <!-- Sección 3: Descripción de la Generación de la Página -->
+  <h2>3. Descripción de la Generación de la Página</h2>
+  <p>
+    Esta página web fue desarrollada como parte de la guía de aprendizaje del programa técnico en programación de software[cite: 1]. Para su estructura y presentación visual se aplicaron los siguientes conceptos:
+  </p>
+  <ul>
+    <li><strong>Lógica de Estilos en CSS:</strong> Se diseñó un tema oscuro (<em>Dark Mode</em>) con variables CSS personalizados y tipografías responsivas[cite: 1].</li>
+    <li><strong>Maquetación Responsiva:</strong> Uso de tablas HTML para datos numéricos y estructuras de listas para la organización clara del contenido[cite: 1].</li>
+    <li><strong>Integración de Gráficas Dinámicas Múltiples:</strong> Implementación de Chart.js con funciones de actualización en tiempo real para alternar entre los gráficos de Bitcoin, Ethereum y Solana[cite: 1].</li>
+    <li><strong>Despliegue Continuo:</strong> Estructura adaptada para ser desplegada como sitio estático en plataformas de hosting como Vercel[cite: 1].</li>
+  </ul>
+
+  <!-- Script JavaScript para Gráficas Interactivas de Criptomonedas -->
   <script>
-    const ctx = document.getElementById('btcChart').getContext('2d');
-    new Chart(ctx, {
+    const cryptoData = {
+      btc: {
+        label: 'Precio Bitcoin (BTC) - USD',
+        data: [42000, 51000, 68000, 61000, 65000, 67000, 63000, 66000],
+        borderColor: '#f0b90b',
+        backgroundColor: 'rgba(240, 185, 11, 0.1)'
+      },
+      eth: {
+        label: 'Precio Ethereum (ETH) - USD',
+        data: [2300, 2900, 3800, 3100, 3500, 3600, 3300, 3450],
+        borderColor: '#627eea',
+        backgroundColor: 'rgba(98, 126, 234, 0.1)'
+      },
+      sol: {
+        label: 'Precio Solana (SOL) - USD',
+        data: [95, 110, 180, 140, 160, 150, 135, 145],
+        borderColor: '#14f195',
+        backgroundColor: 'rgba(20, 241, 149, 0.1)'
+      }
+    };
+
+    const ctx = document.getElementById('cryptoChart').getContext('2d');
+    let currentChart = new Chart(ctx, {
       type: 'line',
       data: {
         labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago'],
         datasets: [{
-          label: 'Evolución Precio Bitcoin (USD)',
-          data: [42000, 51000, 68000, 61000, 65000, 67000, 63000, 66000],
-          borderColor: '#f0b90b',
-          backgroundColor: 'rgba(240, 185, 11, 0.1)',
+          label: cryptoData.btc.label,
+          data: cryptoData.btc.data,
+          borderColor: cryptoData.btc.borderColor,
+          backgroundColor: cryptoData.btc.backgroundColor,
           fill: true,
           tension: 0.3
         }]
@@ -311,9 +369,18 @@
         }
       }
     });
+
+    function switchCrypto(key) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+
+      currentChart.data.datasets[0].label = cryptoData[key].label;
+      currentChart.data.datasets[0].data = cryptoData[key].data;
+      currentChart.data.datasets[0].borderColor = cryptoData[key].borderColor;
+      currentChart.data.datasets[0].backgroundColor = cryptoData[key].backgroundColor;
+      currentChart.update();
+    }
   </script>
 
-   <img src="tra  <img src="Bitcoin.gif" width="100%" alt="Binance 
-  
 </body>
 </html>
