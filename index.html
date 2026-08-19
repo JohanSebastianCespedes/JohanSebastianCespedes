@@ -4,14 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sebastián | Cripto Trading & Análisis de Mercados Digitales</title>
-  <!-- CDN de Chart.js para gráficas de líneas -->
+  <!-- CDN de Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <!-- CDN de ECharts para el indicador tipo velocímetro/gauge -->
+  <!-- CDN de ECharts -->
   <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
   <style>
     :root {
       --bg-color: #0d1117;
       --card-bg: #161b22;
+      --card-hover: #1c2128;
       --border-color: #30363d;
       --text-color: #c9d1d9;
       --text-muted: #8b949e;
@@ -20,6 +21,7 @@
       --accent-green: #0ecb81;
       --accent-red: #f6465d;
       --accent-gold: #f0b90b;
+      --accent-blue: #58a6ff;
     }
 
     body {
@@ -28,118 +30,118 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
       line-height: 1.6;
       padding: 30px;
-      max-width: 900px;
+      max-width: 950px;
       margin: 0 auto;
     }
 
+    h1, h2, h3 {
+      color: #ffffff;
+      letter-spacing: 0.5px;
+    }
+
     h1 {
-      font-size: 2rem;
-      border-bottom: 1px solid var(--border-color);
-      padding-bottom: 10px;
+      font-size: 2.2rem;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 12px;
       margin-top: 20px;
-      color: var(--text-color);
+      background: linear-gradient(90deg, #f0b90b, #58a6ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     h2 {
       font-size: 1.5rem;
       border-bottom: 1px solid var(--border-color);
       padding-bottom: 8px;
-      margin-top: 24px;
-      color: var(--text-color);
+      margin-top: 30px;
     }
 
     h3 {
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       margin-top: 20px;
-      color: var(--text-color);
-    }
-
-    p, li {
-      font-size: 1rem;
-    }
-
-    ul {
-      padding-left: 20px;
-      margin-bottom: 16px;
-    }
-
-    li {
-      margin-bottom: 6px;
     }
 
     hr {
       border: 0;
       height: 1px;
-      background: var(--border-color);
-      margin: 24px 0;
+      background: linear-gradient(90deg, rgba(48,54,61,0), rgba(48,54,61,1), rgba(48,54,61,0));
+      margin: 30px 0;
     }
 
     a {
       color: var(--link-color);
       text-decoration: none;
+      transition: color 0.2s;
     }
 
     a:hover {
       text-decoration: underline;
+      color: #79c0ff;
     }
 
-    code {
-      background-color: rgba(110, 118, 129, 0.4);
-      padding: 0.2em 0.4em;
-      border-radius: 6px;
-      font-size: 85%;
-      font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
-    }
-
-    pre {
-      background-color: var(--code-bg);
-      border: 1px solid var(--border-color);
-      padding: 16px;
-      border-radius: 6px;
-      overflow-x: auto;
-      font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
-      font-size: 85%;
-      line-height: 1.45;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 20px 0;
-    }
-
-    th, td {
-      border: 1px solid var(--border-color);
-      padding: 10px 15px;
-      text-align: left;
-    }
-
-    th {
+    /* Cards interactivos */
+    .section-card {
       background-color: var(--card-bg);
-      font-weight: bold;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s, border-color 0.2s;
     }
 
+    .section-card:hover {
+      border-color: var(--accent-blue);
+      transform: translateY(-2px);
+    }
+
+    /* Botones de Operación */
     .btn-container {
       display: flex;
       gap: 15px;
       margin: 20px 0;
+      flex-wrap: wrap;
     }
 
     .btn {
-      padding: 10px 20px;
+      padding: 12px 24px;
       border: none;
       border-radius: 6px;
       font-weight: bold;
       cursor: pointer;
       font-size: 0.95rem;
-      transition: opacity 0.2s;
+      transition: all 0.2s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
 
     .btn-buy { background-color: var(--accent-green); color: #000; }
     .btn-sell { background-color: var(--accent-red); color: #fff; }
     .btn-gold { background-color: var(--accent-gold); color: #000; }
-    .btn:hover { opacity: 0.85; }
+    .btn:hover { transform: scale(1.03); filter: brightness(1.1); }
 
+    /* Tablas pro */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      overflow: hidden;
+      border-radius: 8px;
+    }
+
+    th, td {
+      border: 1px solid var(--border-color);
+      padding: 12px 15px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #21262d;
+      color: var(--accent-gold);
+    }
+
+    tr:nth-child(even) { background-color: rgba(255,255,255,0.02); }
+
+    /* Pestanias de Gráficas */
     .crypto-tabs {
       display: flex;
       gap: 10px;
@@ -147,67 +149,92 @@
     }
 
     .tab-btn {
-      padding: 8px 16px;
+      padding: 8px 18px;
       background-color: var(--card-bg);
       border: 1px solid var(--border-color);
       color: var(--text-color);
       border-radius: 6px;
       cursor: pointer;
       font-weight: bold;
-      transition: background-color 0.2s, border-color 0.2s;
+      transition: all 0.2s;
     }
 
     .tab-btn.active {
       border-color: var(--accent-gold);
       background-color: #21262d;
+      color: var(--accent-gold);
     }
 
-    .chart-box {
-      background-color: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 20px;
+    /* Contenedores para Imágenes y GIFs futuros */
+    .media-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
       margin: 20px 0;
     }
 
-    /* Contenedor del velocímetro/gauge */
-    #gaugeContainer {
-      width: 100%;
-      height: 380px;
+    .media-placeholder {
+      background-color: var(--card-bg);
+      border: 2px dashed var(--border-color);
+      border-radius: 8px;
+      padding: 30px 15px;
+      text-align: center;
+      color: var(--text-muted);
+      transition: border-color 0.2s;
+    }
+
+    .media-placeholder:hover {
+      border-color: var(--accent-gold);
+    }
+
+    /* Contenedores de Velocímetros Dobles (Compra y Venta) */
+    .gauge-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .gauge-box {
+      height: 320px;
+    }
+
+    pre {
+      background-color: var(--code-bg);
+      border: 1px solid var(--border-color);
+      padding: 16px;
+      border-radius: 6px;
+      color: #79c0ff;
     }
   </style>
 </head>
 <body>
 
-  <!-- Encabezado Principal -->
+
   <h1>🪙 Sebastián | Cripto Trading & Análisis de Mercados Digitales 📈</h1>
-  <p><strong>🚀 **Crypto Trader & Developer**</strong></p>
+  <p><strong>🚀 Crypto Trader & Developer</strong></p>
   <p>Welcome to my GitHub profile! I am passionate about financial markets, blockchain technology, and building automated trading strategies.</p>
 
   <hr>
+  
+  <div class="section-card">
+    <h3>📊 Market Interests & Expertise</h3>
+    <ul>
+      <li><strong>Cryptocurrencies:</strong> Bitcoin (BTC), Ethereum (ETH), and Altcoin analysis.</li>
+      <li><strong>Trading Style:</strong> Algorithmic trading, technical analysis, and risk management.</li>
+      <li><strong>Tools & Tech:</strong> Python (Pandas, NumPy), Pine Script (TradingView), and Crypto Exchange APIs.</li>
+    </ul>
+  </div>
 
-  <!-- Sección: Market Interests & Expertise -->
-  <h3>📊 Market Interests & Expertise</h3>
+  <div class="section-card">
+    <h3>💻 What I'm Working On</h3>
+    <ul>
+      <li>🤖 Developing automated trading bots.</li>
+      <li>📊 Backtesting strategies using historical crypto data.</li>
+      <li>🧪 Exploring decentralized finance (DeFi) protocols.</li>
+    </ul>
+  </div>
 
-  <ul>
-    <li><strong>Cryptocurrencies:</strong> Bitcoin (BTC), Ethereum (ETH), and Altcoin analysis.</li>
-    <li><strong>Trading Style:</strong> Algorithmic trading, technical analysis, and risk management.</li>
-    <li><strong>Tools & Tech:</strong> Python (Pandas, NumPy), Pine Script (TradingView), and Crypto Exchange APIs.</li>
-  </ul>
-
-  <hr>
-
-  <!-- Sección: What I'm Working On -->
-  <h3>💻 What I'm Working On</h3>
-  <ul>
-    <li>🤖 Developing automated trading bots.</li>
-    <li>📊 Backtesting strategies using historical crypto data.</li>
-    <li>🧪 Exploring decentralized finance (DeFi) protocols.</li>
-  </ul>
-
-  <hr>
-
-  <!-- Sección: Connect with Me -->
+  <!-- Redes -->
   <h3>🌐 Connect with Me</h3>
   <ul>
     <li>💼 <a href="https://your-linkedin-profile-link" target="_blank">LinkedIn</a></li>
@@ -217,46 +244,60 @@
 
   <hr>
 
-  <!-- Sección: Conceptos Clave -->
+  <!-- Espacio Reservado para Imágenes y GIF -->
+  <h2>🖼️ Galería multimedia del Mercado</h2>
+  <div class="media-grid">
+    <div class="media-placeholder">
+      📌 <strong></strong><br>
+      <small><img src="BITCOIN 2.jpg" width="1000" height="1000" alt="Bitcoin Image"></small>
+    <div class="media-placeholder">
+      📌 <strong></strong><br>
+      <small> <img src="trading.jpg" width="100%" alt="Binance Image"></div> / Exchnage</small>
+    </div>
+    <div class="media-placeholder">
+      🎬 <strong></strong><br>
+      <small><img src="tra  <img src="Bitcoin.gif" width="100%" alt="Binance</small>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- Conceptos Clave -->
   <h2>📉 Conceptos Clave del Trading con Criptomonedas</h2>
   <p>El trading de criptomonedas consiste en especular sobre los movimientos de precio de los activos digitales mediante el estudio de la oferta y la demanda.</p>
 
   <h3>1. Tipos de Operativa en el Mercado</h3>
   <ul>
-    <li><strong>Spot Trading (Mercado al Contado):</strong> Compra y posesión directa del activo (ej. comprar BTC para mantener a mediano/largo plazo).</li>
-    <li><strong>Trading de Futuros y Derivados:</strong> Permite operar con apalancamiento para obtener beneficios tanto en mercados alcistas (<em>Long</em>) como en mercados bajistas (<em>Short</em>).</li>
-    <li><strong>Trading Algorítmico / Cuantitativo:</strong> Automatización de reglas de entrada y salida mediante código (Python / Pine Script).</li>
+    <li><strong>Spot Trading (Mercado al Contado):</strong> Compra y posesión directa del activo.</li>
+    <li><strong>Trading de Futuros y Derivados:</strong> Operativa apalancada en mercados alcistas (<em>Long</em>) y bajistas (<em>Short</em>).</li>
+    <li><strong>Trading Algorítmico / Cuantitativo:</strong> Reglas automatizadas mediante código (Python / Pine Script).</li>
   </ul>
 
   <h3>2. Pilar Fundamental: Gestión del Riesgo (Risk Management)</h3>
-  <p>Ninguna estrategia es efectiva sin una gestión de capital rigurosa:</p>
   <ul>
-    <li><strong>Ratio Riesgo/Beneficio (R/R):</strong> Apuntar siempre a operaciones con un riesgo mínimo de 1:2 o 1:3.</li>
-    <li><strong>Stop Loss (SL):</strong> Nivel de precio predeterminado para limitar pérdidas de forma automática.</li>
-    <li><strong>Take Profit (TP):</strong> Nivel de precio objetivo para asegurar ganancias.</li>
-    <li><strong>Gestión por Operación:</strong> No arriesgar más del 1% al 2% del capital total del portafolio por posición.</li>
+    <li><strong>Ratio Riesgo/Beneficio (R/R):</strong> Ratio objetivo mínimo de 1:2 o 1:3.</li>
+    <li><strong>Stop Loss (SL) & Take Profit (TP):</strong> Puntos clave para control automático de pérdidas y ganancias.</li>
   </ul>
 
   <!-- Botones de Acción -->
   <div class="btn-container">
-    <button class="btn btn-buy">Comprar (Long)</button>
-    <button class="btn btn-sell">Vender (Short)</button>
-    <button class="btn btn-gold">Gestión de Riesgo</button>
+    <button class="btn btn-buy">🟢 Comprar (Long)</button>
+    <button class="btn btn-sell">🔴 Vender (Short)</button>
+    <button class="btn btn-gold">⚙️ Gestión de Riesgo</button>
   </div>
 
   <hr>
 
-  <!-- Sección: Tabla de Análisis -->
+  <!-- Tabla de Activos -->
   <h2>📊 Matriz de Análisis de Activos Principales</h2>
-  
   <table>
     <thead>
       <tr>
         <th>Activo</th>
         <th>Símbolo</th>
         <th>Tipo de Análisis</th>
-        <th>Indicadores / Fuentes Clave</th>
-        <th>Función en el Portafolio</th>
+        <th>Indicadores Clave</th>
+        <th>Función</th>
       </tr>
     </thead>
     <tbody>
@@ -264,31 +305,30 @@
         <td><strong>Bitcoin</strong></td>
         <td><code>BTC</code></td>
         <td>Macro & On-Chain</td>
-        <td>Dominancia de BTC, Halving, MVRV Z-Score</td>
-        <td>Reserva de valor y dirección del mercado</td>
+        <td>Dominancia, Halving, MVRV Z-Score</td>
+        <td>Reserva de Valor</td>
       </tr>
       <tr>
         <td><strong>Ethereum</strong></td>
         <td><code>ETH</code></td>
         <td>Fundamental & DeFi</td>
-        <td>Gas Fees, TVL en DeFi, Staking Yields</td>
-        <td>Activo de utilidad para ecosistemas inteligentes</td>
+        <td>Gas Fees, TVL, Staking Yields</td>
+        <td>Utilidad DApps</td>
       </tr>
       <tr>
         <td><strong>Solana</strong></td>
         <td><code>SOL</code></td>
         <td>Técnico & Alta Velocidad</td>
-        <td>RSI, MACD, Medias Móviles, TPS Network</td>
-        <td>Captura de volatilidad y ecosistema DApps</td>
+        <td>RSI, MACD, TPS Network</td>
+        <td>Ecosistema Rápido</td>
       </tr>
     </tbody>
   </table>
 
   <hr>
 
-  <!-- Sección: Indicadores -->
-  <h2>⚙️ Indicadores Técnicos y Herramientas de Análisis</h2>
-
+  <!-- Indicadores Técnicos -->
+  <h2>⚙️ Indicadores Técnicos y Herramientas</h2>
   <pre>
 [ Indicadores ]  ---> RSI (Fuerza Relativa) | MACD | Soportes y Resistencias | Fibonacci
 [ On-Chain ]     ---> Flujo de Exchanges | MVRV | Métricas de Minería | Direcciones Activas
@@ -297,33 +337,38 @@
 
   <hr>
 
-  <!-- Sección: Gráficas dinámicas múltiples -->
+  <!-- Gráficas de Precio -->
   <h2>📈 Gráficas del Mercado (Bitcoin, Ethereum, Solana)</h2>
-  <p>Análisis visual del rendimiento y tendencia de las principales criptomonedas del mercado 📊</p>
-
   <div class="crypto-tabs">
     <button class="tab-btn active" onclick="switchCrypto('btc')">Bitcoin (BTC)</button>
     <button class="tab-btn" onclick="switchCrypto('eth')">Ethereum (ETH)</button>
     <button class="tab-btn" onclick="switchCrypto('sol')">Solana (SOL)</button>
   </div>
 
-  <div class="chart-box">
+  <div class="section-card">
     <canvas id="cryptoChart"></canvas>
   </div>
 
   <hr>
 
-  <!-- NUEVA SECCIÓN: Indicador de Compra y Venta (ECharts Gauge) -->
-  <h2>🚦 Indicador de Sentimiento del Mercado (Compra / Venta)</h2>
-  <p>Medidor dinámico del sentimiento actual basado en indicadores técnicos (RSI, MAV, Volumen) 📈📉</p>
+  <!-- Medidores de Compra y Venta (ECharts Gauges) -->
+  <h2>🚦 Indicadores de Sentimiento: COMPRA vs VENTA</h2>
+  <p>Monitoreo dual de presión compradora y vendedora basado en indicadores técnicos en tiempo real 🟢🔴</p>
 
-  <div class="chart-box">
-    <div id="gaugeContainer"></div>
+  <div class="gauge-grid">
+    <div class="section-card">
+      <h3 style="text-align: center; color: var(--accent-green);">🟢 Sentimiento de COMPRA</h3>
+      <div id="buyGauge" class="gauge-box"></div>
+    </div>
+    <div class="section-card">
+      <h3 style="text-align: center; color: var(--accent-red);">🔴 Sentimiento de VENTA</h3>
+      <div id="sellGauge" class="gauge-box"></div>
+    </div>
   </div>
 
   <!-- Scripts JavaScript -->
   <script>
-    // 1. Lógica Chart.js para líneas de tiempo
+    // 1. Chart.js - Evolución del precio
     const cryptoData = {
       btc: {
         label: 'Precio Bitcoin (BTC) - USD',
@@ -380,108 +425,74 @@
       currentChart.update();
     }
 
-    // 2. Lógica ECharts para el medidor tipo Gauge (Velocímetro de Compra / Venta)
-    const gaugeDom = document.getElementById('gaugeContainer');
-    const myGauge = echarts.init(gaugeDom, 'dark');
-
-    const gaugeOption = {
-      backgroundColor: 'transparent',
-      tooltip: {
-        formatter: '{a} <br/>{b} : {c}%'
-      },
-      series: [
-        {
-          name: 'Sentimiento',
+    // 2. Función generadora de ECharts para Medidor de Compra/Venta
+    function createGauge(elementId, value, title, mainColor, colors) {
+      const chartDom = document.getElementById(elementId);
+      const myChart = echarts.init(chartDom, 'dark');
+      
+      const option = {
+        backgroundColor: 'transparent',
+        series: [{
+          name: title,
           type: 'gauge',
           startAngle: 180,
           endAngle: 0,
           min: 0,
           max: 100,
-          splitNumber: 5,
-          itemStyle: {
-            color: '#58a6ff'
-          },
-          progress: {
-            show: true,
-            width: 18
-          },
           pointer: {
             icon: 'path://M12.8,0.7l12,40.1H0.7L12.8,0.7z',
-            length: '60%',
-            width: 8,
+            length: '55%',
+            width: 6,
             offsetCenter: [0, '-10%'],
-            itemStyle: {
-              color: 'auto'
-            }
+            itemStyle: { color: mainColor }
           },
           axisLine: {
             lineStyle: {
-              width: 18,
-              color: [
-                [0.2, '#f6465d'], // Venta Fuerte
-                [0.4, '#ff7675'], // Venta
-                [0.6, '#f0b90b'], // Neutral
-                [0.8, '#55efc4'], // Compra
-                [1.0, '#0ecb81']  // Compra Fuerte
-              ]
+              width: 14,
+              color: colors
             }
           },
-          axisTick: {
-            distance: -28,
-            splitNumber: 5,
-            lineStyle: {
-              width: 2,
-              color: '#8b949e'
-            }
-          },
-          splitLine: {
-            distance: -35,
-            length: 12,
-            lineStyle: {
-              width: 3,
-              color: '#8b949e'
-            }
-          },
+          axisTick: { show: false },
+          splitLine: { distance: -20, length: 8, lineStyle: { color: '#8b949e' } },
           axisLabel: {
-            distance: -20,
+            distance: -15,
             color: '#c9d1d9',
-            fontSize: 12,
-            formatter: function (value) {
-              if (value === 10) return 'Venta Fuerte';
-              if (value === 30) return 'Venta';
-              if (value === 50) return 'Neutro';
-              if (value === 70) return 'Compra';
-              if (value === 90) return 'Compra Fuerte';
+            fontSize: 10,
+            formatter: function (v) {
+              if (v === 20) return 'Bajo';
+              if (v === 50) return 'Medio';
+              if (v === 80) return 'Alto';
               return '';
             }
           },
-          title: {
-            offsetCenter: [0, '30%'],
-            fontSize: 18,
-            color: '#c9d1d9'
-          },
           detail: {
-            fontSize: 32,
-            offsetCenter: [0, '0%'],
+            fontSize: 24,
+            offsetCenter: [0, '20%'],
             valueAnimation: true,
-            formatter: function (value) {
-              return Math.round(value) + ' Pts';
-            },
-            color: 'inherit'
+            formatter: '{value}%',
+            color: mainColor
           },
-          data: [
-            {
-              value: 72,
-              name: 'SEÑAL: COMPRA'
-            }
-          ]
-        }
-      ]
-    };
+          data: [{ value: value, name: title }]
+        }]
+      };
+      
+      myChart.setOption(option);
+      window.addEventListener('resize', () => myChart.resize());
+    }
 
-    myGauge.setOption(gaugeOption);
-    window.addEventListener('resize', () => myGauge.resize());
+    // Inicializar Medidor de COMPRA (Verde)
+    createGauge('buyGauge', 78, 'Presión Compradora', '#0ecb81', [
+      [0.3, '#30363d'],
+      [0.7, '#f0b90b'],
+      [1.0, '#0ecb81']
+    ]);
+
+    // Inicializar Medidor de VENTA (Rojo)
+    createGauge('sellGauge', 22, 'Presión Vendedora', '#f6465d', [
+      [0.3, '#30363d'],
+      [0.7, '#f0b90b'],
+      [1.0, '#f6465d']
+    ]);
   </script>
-
 </body>
 </html>
