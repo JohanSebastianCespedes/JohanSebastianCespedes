@@ -1,277 +1,504 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Trading Portal</title>
-    <!-- Chart.js CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        :root {
-            --bg-color: #0b0e11;
-            --card-bg: #1e2329;
-            --text-color: #eaecef;
-            --accent-green: #0ecb81;
-            --accent-red: #f6465d;
-            --accent-blue: #1e88e5;
-            --border-color: #2b313a;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sebastián | Cripto Trading & Análisis de Mercados Digitales</title>
+  <!-- CDN de Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- CDN de ECharts -->
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+  <style>
+    :root {
+      --bg-color: #0d1117;
+      --card-bg: #161b22;
+      --card-hover: #1c2128;
+      --border-color: #30363d;
+      --text-color: #c9d1d9;
+      --text-muted: #8b949e;
+      --link-color: #58a6ff;
+      --code-bg: #161b22;
+      --accent-green: #0ecb81;
+      --accent-red: #f6465d;
+      --accent-gold: #f0b90b;
+      --accent-blue: #58a6ff;
+    }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      padding: 30px;
+      max-width: 950px;
+      margin: 0 auto;
+    }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
+    h1, h2, h3 {
+      color: #ffffff;
+      letter-spacing: 0.5px;
+    }
 
-        header {
-            background-color: var(--card-bg);
-            padding: 15px 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border-color);
-        }
+    h1 {
+      font-size: 2.2rem;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 12px;
+      margin-top: 20px;
+      background: linear-gradient(90deg, #f0b90b, #58a6ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
 
-        .logo {
-            font-size: 1.4rem;
-            font-weight: bold;
-            color: #f0b90b;
-        }
+    h2 {
+      font-size: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 8px;
+      margin-top: 30px;
+    }
 
-        nav a {
-            color: var(--text-color);
-            text-decoration: none;
-            margin-left: 20px;
-            transition: color 0.2s;
-        }
+    h3 {
+      font-size: 1.2rem;
+      margin-top: 20px;
+    }
 
-        nav a:hover {
-            color: #f0b90b;
-        }
+    hr {
+      border: 0;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(48,54,61,0), rgba(48,54,61,1), rgba(48,54,61,0));
+      margin: 30px 0;
+    }
 
-        .main-container {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 20px;
-            padding: 20px;
-            flex: 1;
-        }
+    a {
+      color: var(--link-color);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
 
-        .card {
-            background-color: var(--card-bg);
-            border-radius: 8px;
-            padding: 20px;
-            border: 1px solid var(--border-color);
-            margin-bottom: 20px;
-        }
+    a:hover {
+      text-decoration: underline;
+      color: #79c0ff;
+    }
 
-        .card h2 {
-            font-size: 1.1rem;
-            margin-bottom: 15px;
-            color: #848e9c;
-        }
+    .section-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s, border-color 0.2s;
+    }
 
-        /* Tabla de Criptomonedas */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+    .section-card:hover {
+      border-color: var(--accent-blue);
+      transform: translateY(-2px);
+    }
 
-        th, td {
-            text-align: left;
-            padding: 12px;
-            border-bottom: 1px solid var(--border-color);
-        }
+    .btn-container {
+      display: flex;
+      gap: 15px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
 
-        th {
-            color: #848e9c;
-            font-weight: normal;
-        }
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
 
-        .price-up { color: var(--accent-green); }
-        .price-down { color: var(--accent-red); }
+    .btn-buy { background-color: var(--accent-green); color: #000; }
+    .btn-sell { background-color: var(--accent-red); color: #fff; }
+    .btn-gold { background-color: var(--accent-gold); color: #000; }
+    .btn:hover { transform: scale(1.03); filter: brightness(1.1); }
 
-        /* Panel de Órdenes */
-        .trade-panel {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      overflow: hidden;
+      border-radius: 8px;
+    }
 
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
+    th, td {
+      border: 1px solid var(--border-color);
+      padding: 12px 15px;
+      text-align: left;
+    }
 
-        .form-group label {
-            font-size: 0.85rem;
-            color: #848e9c;
-        }
+    th {
+      background-color: #21262d;
+      color: var(--accent-gold);
+    }
 
-        .form-group input {
-            background-color: var(--bg-color);
-            border: 1px solid var(--border-color);
-            color: var(--text-color);
-            padding: 10px;
-            border-radius: 4px;
-            outline: none;
-        }
+    tr:nth-child(even) { background-color: rgba(255,255,255,0.02); }
 
-        .btn-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
+    .crypto-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
 
-        .btn {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            border-radius: 4px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: opacity 0.2s;
-        }
+    .tab-btn {
+      padding: 8px 18px;
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-color);
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.2s;
+    }
 
-        .btn:hover { opacity: 0.9; }
-        .btn-buy { background-color: var(--accent-green); color: white; }
-        .btn-sell { background-color: var(--accent-red); color: white; }
+    .tab-btn.active {
+      border-color: var(--accent-gold);
+      background-color: #21262d;
+      color: var(--accent-gold);
+    }
 
-        @media (max-width: 900px) {
-            .main-container {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    .media-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+      margin: 20px 0;
+    }
+
+    .media-placeholder {
+      background-color: var(--card-bg);
+      border: 2px dashed var(--border-color);
+      border-radius: 8px;
+      padding: 30px 15px;
+      text-align: center;
+      color: var(--text-muted);
+      transition: border-color 0.2s;
+    }
+
+    .media-placeholder:hover {
+      border-color: var(--accent-gold);
+    }
+
+    .gauge-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .gauge-box {
+      height: 320px;
+    }
+
+    pre {
+      background-color: var(--code-bg);
+      border: 1px solid var(--border-color);
+      padding: 16px;
+      border-radius: 6px;
+      color: #79c0ff;
+    }
+  </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo">⚡ CryptoTrade</div>
-        <nav>
-            <a href="#">Mercados</a>
-            <a href="#">Trading</a>
-            <a href="#">Portafolio</a>
-            <a href="#">Análisis</a>
-        </nav>
-    </header>
+  <!-- Encabezado Principal -->
+  <h1>🪙 Sebastián | Cripto Trading & Análisis de Mercados Digitales 📈</h1>
+  <p><strong>🚀 Crypto Trader & Developer</strong></p>
+  <p>Welcome, I am passionate about financial markets, blockchain technology, and building automated trading strategies.</p>
 
-    <div class="main-container">
-        <!-- Columna Izquierda: Gráfico y Mercado -->
-        <div class="left-column">
-            <div class="card">
-                <h2>Gráfico de Precios (BTC/USDT)</h2>
-                <canvas id="priceChart" height="120"></canvas>
-            </div>
+  <hr>
+<img src="BITCOIN 2.jpg" width="1000" height="600" alt="Bitcoin Image">
 
-            <div class="card">
-                <h2>Mercados Principales</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Par</th>
-                            <th>Precio</th>
-                            <th>24h Cambio</th>
-                            <th>Volumen</th>
-                        </tr>
-                    </thead>
-                    <tbody id="market-table">
-                        <tr>
-                            <td><strong>BTC/USDT</strong></td>
-                            <td>$64,250.00</td>
-                            <td class="price-up">+2.45%</td>
-                            <td>$32.4M</td>
-                        </tr>
-                        <tr>
-                            <td><strong>ETH/USDT</strong></td>
-                            <td>$3,480.50</td>
-                            <td class="price-up">+1.80%</td>
-                            <td>$18.1M</td>
-                        </tr>
-                        <tr>
-                            <td><strong>SOL/USDT</strong></td>
-                            <td>$145.20</td>
-                            <td class="price-down">-0.95%</td>
-                            <td>$8.7M</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+  <div class="section-card">
+    <h3>📊 Market Interests & Expertise</h3>
+    <ul>
+      <li><strong>Cryptocurrencies:</strong> Bitcoin (BTC), Ethereum (ETH), and Altcoin analysis.</li>
+      <li><strong>Trading Style:</strong> Algorithmic trading, technical analysis, and risk management.</li>
+      <li><strong>Tools & Tech:</strong> Python (Pandas, NumPy), Pine Script (TradingView), and Crypto Exchange APIs.</li>
+    </ul>
+  </div>
 
-        <!-- Columna Derecha: Formulario de Orden y Resumen -->
-        <div class="right-column">
-            <div class="card">
-                <h2>Operar</h2>
-                <div class="trade-panel">
-                    <div class="form-group">
-                        <label for="price">Precio (USDT)</label>
-                        <input type="number" id="price" value="64250.00">
-                    </div>
-                    <div class="form-group">
-                        <label for="amount">Monto (BTC)</label>
-                        <input type="number" id="amount" placeholder="0.00">
-                    </div>
-                    <div class="btn-group">
-                        <button class="btn btn-buy">Comprar BTC</button>
-                        <button class="btn btn-sell">Vender BTC</button>
-                    </div>
-                </div>
-            </div>
+  <div class="section-card">
+    <h3>💻 What I'm Working On</h3>
+    <ul>
+      <li>🤖 Developing automated trading bots.</li>
+      <li>📊 Backtesting strategies using historical crypto data.</li>
+      <li>🧪 Exploring decentralized finance (DeFi) protocols.</li>
+    </ul>
+  </div>
 
-            <div class="card">
-                <h2>Indicadores de Mercado</h2>
-                <p style="font-size: 0.9rem; margin-bottom: 10px;">Sentimiento: <strong style="color: var(--accent-green);">Codicia Moderada (68)</strong></p>
-                <p style="font-size: 0.9rem;">Tendencia 24h: <strong style="color: var(--accent-green);">Alcista</strong></p>
-            </div>
-        </div>
+  <!-- Redes -->
+  <h3>🌐 Connect with Me</h3>
+  <ul>
+    <li>💼 <a href="https://your-linkedin-profile-link" target="_blank">LinkedIn</a></li>
+    <li>🐦 <a href="https://your-twitter-profile-link" target="_blank">Twitter/X</a></li>
+    <li>💬 Ask me about: <strong>Crypto, Trading Strategies, and Python</strong></li>
+  </ul>
+
+  <hr>
+<img src="trading.jpg" width="100%" alt="Binance Image">
+  
+  <h2>📉 Conceptos Clave del Trading con Criptomonedas</h2>
+  <p>El trading de criptomonedas consiste en especular sobre los movimientos de precio de los activos digitales mediante el estudio de la oferta y la demanda.</p>
+
+  <h3>1. Tipos de Operativa en el Mercado</h3>
+  <ul>
+    <li><strong>Spot Trading (Mercado al Contado):</strong> Compra y posesión directa del activo.</li>
+    <li><strong>Trading de Futuros y Derivados:</strong> Operativa apalancada en mercados alcistas (<em>Long</em>) y bajistas (<em>Short</em>).</li>
+    <li><strong>Trading Algorítmico / Cuantitativo:</strong> Reglas automatizadas mediante código (Python / Pine Script).</li>
+  </ul>
+
+  <h3>2. Pilar Fundamental: Gestión del Riesgo (Risk Management)</h3>
+  <ul>
+    <li><strong>Ratio Riesgo/Beneficio (R/R):</strong> Ratio objetivo mínimo de 1:2 o 1:3.</li>
+    <li><strong>Stop Loss (SL) & Take Profit (TP):</strong> Puntos clave para control automático de pérdidas y ganancias.</li>
+  </ul>
+
+  <!-- Botones de Acción -->
+  <div class="btn-container">
+    <button class="btn btn-buy">🟢 Comprar (Long)</button>
+    <button class="btn btn-sell">🔴 Vender (Short)</button>
+    <button class="btn btn-gold">⚙️ Gestión de Riesgo</button>
+  </div>
+
+  <hr>
+
+  <!-- Tabla de Activos -->
+  <h2>📊 Matriz de Análisis de Activos Principales</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Activo</th>
+        <th>Símbolo</th>
+        <th>Tipo de Análisis</th>
+        <th>Indicadores Clave</th>
+        <th>Función</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Bitcoin</strong></td>
+        <td><code>BTC</code></td>
+        <td>Macro & On-Chain</td>
+        <td>Dominancia, Halving, MVRV Z-Score</td>
+        <td>Reserva de Valor</td>
+      </tr>
+      <tr>
+        <td><strong>Ethereum</strong></td>
+        <td><code>ETH</code></td>
+        <td>Fundamental & DeFi</td>
+        <td>Gas Fees, TVL, Staking Yields</td>
+        <td>Utilidad DApps</td>
+      </tr>
+      <tr>
+        <td><strong>Solana</strong></td>
+        <td><code>SOL</code></td>
+        <td>Técnico & Alta Velocidad</td>
+        <td>RSI, MACD, TPS Network</td>
+        <td>Ecosistema Rápido</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <hr>
+
+  <!-- Gráficas de Precio (Líneas) -->
+  <h2>📈 Evolución del Precio (Bitcoin, Ethereum, Solana)</h2>
+  <div class="crypto-tabs">
+    <button class="tab-btn active" onclick="switchCrypto('btc')">Bitcoin (BTC)</button>
+    <button class="tab-btn" onclick="switchCrypto('eth')">Ethereum (ETH)</button>
+    <button class="tab-btn" onclick="switchCrypto('sol')">Solana (SOL)</button>
+  </div>
+
+  <div class="section-card">
+    <canvas id="cryptoChart"></canvas>
+  </div>
+
+  <!-- Diagrama de Barras -->
+  <h2>📊 Comparativa: Capitalización de Mercado</h2>
+  <p>Comparación del tamaño del mercado entre las 3 principales criptomonedas (Expresado en Billones de USD).</p>
+  <div class="section-card">
+    <canvas id="barChart"></canvas>
+  </div>
+
+  <hr>
+
+  
+  <h2>🚦 Indicadores de Sentimiento: COMPRA vs VENTA</h2>
+  <p>Monitoreo dual de presión compradora y vendedora basado en indicadores técnicos en tiempo real 🟢🔴</p>
+
+  <div class="gauge-grid">
+    <div class="section-card">
+      <h3 style="text-align: center; color: var(--accent-green);">🟢 Sentimiento de COMPRA</h3>
+      <div id="buyGauge" class="gauge-box"></div>
     </div>
+    <div class="section-card">
+      <h3 style="text-align: center; color: var(--accent-red);">🔴 Sentimiento de VENTA</h3>
+      <div id="sellGauge" class="gauge-box"></div>
+    </div>
+  </div>
 
-    <script>
-        // Inicialización del Gráfico de Precios con Chart.js
-        const ctx = document.getElementById('priceChart').getContext('2d');
-        const priceChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', '24:00'],
-                datasets: [{
-                    label: 'BTC / USDT',
-                    data: [62800, 63100, 62950, 63800, 63500, 64100, 64250],
-                    borderColor: '#0ecb81',
-                    backgroundColor: 'rgba(14, 203, 129, 0.1)',
-                    fill: true,
-                    tension: 0.3
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        labels: { color: '#eaecef' }
-                    }
-                },
-                scales: {
-                    x: {
-                        ticks: { color: '#848e9c' },
-                        grid: { color: '#2b313a' }
-                    },
-                    y: {
-                        ticks: { color: '#848e9c' },
-                        grid: { color: '#2b313a' }
-                    }
-                }
+  <!-- Scripts JavaScript -->
+  <script>
+    // 1. Chart.js - Evolución del precio (Líneas)
+    const cryptoData = {
+      btc: {
+        label: 'Precio Bitcoin (BTC) - USD',
+        data: [42000, 51000, 68000, 61000, 65000, 67000, 63000, 66000],
+        borderColor: '#f0b90b',
+        backgroundColor: 'rgba(240, 185, 11, 0.1)'
+      },
+      eth: {
+        label: 'Precio Ethereum (ETH) - USD',
+        data: [2300, 2900, 3800, 3100, 3500, 3600, 3300, 3450],
+        borderColor: '#627eea',
+        backgroundColor: 'rgba(98, 126, 234, 0.1)'
+      },
+      sol: {
+        label: 'Precio Solana (SOL) - USD',
+        data: [95, 110, 180, 140, 160, 150, 135, 145],
+        borderColor: '#14f195',
+        backgroundColor: 'rgba(20, 241, 149, 0.1)'
+      }
+    };
+
+    const ctx = document.getElementById('cryptoChart').getContext('2d');
+    let currentChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago'],
+        datasets: [{
+          label: cryptoData.btc.label,
+          data: cryptoData.btc.data,
+          borderColor: cryptoData.btc.borderColor,
+          backgroundColor: cryptoData.btc.backgroundColor,
+          fill: true,
+          tension: 0.3
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { labels: { color: '#c9d1d9' } } },
+        scales: {
+          x: { ticks: { color: '#8b949e' }, grid: { color: '#30363d' } },
+          y: { ticks: { color: '#8b949e' }, grid: { color: '#30363d' } }
+        }
+      }
+    });
+
+    function switchCrypto(key) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+
+      currentChart.data.datasets[0].label = cryptoData[key].label;
+      currentChart.data.datasets[0].data = cryptoData[key].data;
+      currentChart.data.datasets[0].borderColor = cryptoData[key].borderColor;
+      currentChart.data.datasets[0].backgroundColor = cryptoData[key].backgroundColor;
+      currentChart.update();
+    }
+
+    // 2. Chart.js - Diagrama de Barras (Capitalización)
+    const ctxBar = document.getElementById('barChart').getContext('2d');
+    new Chart(ctxBar, {
+      type: 'bar',
+      data: {
+        labels: ['Bitcoin (BTC)', 'Ethereum (ETH)', 'Solana (SOL)'],
+        datasets: [{
+          label: 'Market Cap (Billones USD)',
+          data: [1300, 420, 75],
+          backgroundColor: [
+            'rgba(240, 185, 11, 0.8)',
+            'rgba(98, 126, 234, 0.8)',
+            'rgba(20, 241, 149, 0.8)'
+          ],
+          borderColor: [
+            '#f0b90b',
+            '#627eea',
+            '#14f195'
+          ],
+          borderWidth: 1,
+          borderRadius: 4
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { labels: { color: '#c9d1d9' } } },
+        scales: {
+          x: { ticks: { color: '#c9d1d9', font: { weight: 'bold' } }, grid: { display: false } },
+          y: { ticks: { color: '#8b949e' }, grid: { color: '#30363d' } }
+        }
+      }
+    });
+
+    // 3. Función ECharts para Medidores de Compra/Venta Corregida
+    function createGauge(elementId, value, mainColor, colors) {
+      const chartDom = document.getElementById(elementId);
+      const myChart = echarts.init(chartDom, 'dark');
+      
+      const option = {
+        backgroundColor: 'transparent',
+        series: [{
+          type: 'gauge',
+          startAngle: 180,
+          endAngle: 0,
+          min: 0,
+          max: 100,
+          pointer: {
+            icon: 'path://M12.8,0.7l12,40.1H0.7L12.8,0.7z',
+            length: '55%',
+            width: 6,
+            offsetCenter: [0, '-10%'],
+            itemStyle: { color: mainColor }
+          },
+          axisLine: {
+            lineStyle: {
+              width: 14,
+              color: colors
             }
-        });
-    </script>
+          },
+          axisTick: { show: false },
+          splitLine: { distance: -20, length: 8, lineStyle: { color: '#8b949e' } },
+          axisLabel: {
+            distance: -15,
+            color: '#c9d1d9',
+            fontSize: 10,
+            formatter: function (v) {
+              if (v === 20) return 'Bajo';
+              if (v === 50) return 'Medio';
+              if (v === 80) return 'Alto';
+              return '';
+            }
+          },
+          detail: {
+            fontSize: 22,
+            offsetCenter: [0, '25%'],
+            valueAnimation: true,
+            formatter: '{value}%',
+            color: mainColor
+          },
+          data: [{ value: value }]
+        }]
+      };
+      
+      myChart.setOption(option);
+      window.addEventListener('resize', () => myChart.resize());
+    }
+
+    // Inicializar Medidores
+    createGauge('buyGauge', 78, '#0ecb81', [
+      [0.3, '#30363d'],
+      [0.7, '#f0b90b'],
+      [1.0, '#0ecb81']
+    ]);
+
+    createGauge('sellGauge', 22, '#f6465d', [
+      [0.3, '#30363d'],
+      [0.7, '#f0b90b'],
+      [1.0, '#f6465d']
+    ]);
+  </script>
 </body>
 </html>
