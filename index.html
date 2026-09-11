@@ -498,6 +498,24 @@
       [0.7, '#f0b90b'],
       [1.0, '#f6465d']
     ]);
-  </script>
+<button class="chatbot-toggler" onclick="toggleChatbot()">💬</button>
+
+  <div class="chat-container" id="chatContainer">
+    <div class="chat-header">
+      <span>🤖 CriptoBot - Trading Assistant</span>
+      <button onclick="toggleChatbot()">✖</button>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="chat-message bot-message">
+        ¡Hola! 👋 Soy CriptoBot. Puedes preguntarme sobre <strong>BTC</strong>, <strong>ETH</strong>, <strong>SOL</strong>, <strong>Gestión de Riesgo</strong> o <strong>Indicadores</strong>.
+      </div>
+    </div>
+    <div class="chat-input-area">
+      <input type="text" id="chatInput" placeholder="Escribe tu duda sobre trading..." onkeypress="handleKeyPress(event)">
+      <button onclick="sendMessage()">Enviar</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
