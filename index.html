@@ -499,6 +499,75 @@
       [0.7, '#f0b90b'],
       [1.0, '#f6465d']
     ]);
+    // --- LÓGICA DEL CHATBOT ---
+    function toggleChatbot() {
+      document.getElementById('chatbot-window').classList.toggle('hidden');
+    }
+
+    function handleKeyPress(e) {
+      if (e.key === 'Enter') sendMessage();
+    }
+
+    function sendMessage() {
+      const input = document.getElementById('user-input');
+      const query = input.value.trim().toLowerCase();
+      if (!query) return;
+
+      appendMessage(input.value, 'user-msg');
+      input.value = '';
+
+      setTimeout(() => {
+        let reply = "No entiendo esa consulta. Prueba preguntando por 'bitcoin', 'ethereum', 'riesgo', 'rsi' o 'comprar'.";
+        if (query.includes('btc') || query.includes('bitcoin')) reply = "Bitcoin (BTC) es la criptomoneda líder y reserva de valor digital.";
+        else if (query.includes('eth') || query.includes('ethereum')) reply = "Ethereum (ETH) es la red principal para contratos inteligentes y DeFi.";
+        else if (query.includes('riesgo') || query.includes('risk')) reply = "Mantén siempre un Ratio Riesgo/Beneficio mínimo de 1:2 y usa Stop Loss (SL).";
+        else if (query.includes('rsi') || query.includes('indicador')) reply = "El RSI mide sobrecompra (>70) y sobreventa (<30) en el mercado.";
+        else if (query.includes('comprar') || query.includes('long')) reply = "Para operar en Long, analiza zonas de soporte clave antes de entrar.";
+
+        appendMessage(reply, 'bot-msg');
+      }, 400);
+    }
+
+    function appendMessage(text, className) {
+      const box = document.getElementById('chatbot-messages');
+      const msg = document.createElement('div');
+      msg.className = className;
+      msg.innerText = text;
+      box.appendChild(msg);
+      box.scrollTop = box.scrollHeight;
+    }
   </script>
+  <!-- --- VISTA Y ESTILOS DEL CHATBOT --- -->
+  <div id="crypto-chatbot-container">
+    <button id="chatbot-toggle-btn" onclick="toggleChatbot()">💬 CryptoBot</button>
+    <div id="chatbot-window" class="hidden">
+      <div class="chatbot-header">
+        <span>🤖 Crypto Assistant</span>
+        <button onclick="toggleChatbot()">✕</button>
+      </div>
+      <div id="chatbot-messages">
+        <div class="bot-msg">¡Hola! Soy tu asistente de trading. Pregúntame sobre BTC, ETH, gestión de riesgo o indicadores.</div>
+      </div>
+      <div class="chatbot-input">
+        <input type="text" id="user-input" placeholder="Escribe tu consulta..." onkeypress="handleKeyPress(event)">
+        <button onclick="sendMessage()">Enviar</button>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    #crypto-chatbot-container { position: fixed; bottom: 20px; right: 20px; font-family: sans-serif; z-index: 1000; }
+    #chatbot-toggle-btn { background: #f0b90b; color: #000; border: none; padding: 12px 18px; border-radius: 25px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+    #chatbot-window { width: 320px; height: 400px; background: #1e2329; border: 1px solid #363c4e; border-radius: 10px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.5); position: absolute; bottom: 50px; right: 0; }
+    .hidden { display: none !important; }
+    .chatbot-header { background: #2b313a; color: #f0b90b; padding: 10px 15px; display: flex; justify-content: space-between; font-weight: bold; align-items: center; }
+    .chatbot-header button { background: none; border: none; color: #fff; cursor: pointer; font-size: 16px; }
+    #chatbot-messages { flex: 1; padding: 10px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; color: #eaeaea; font-size: 13px; }
+    .bot-msg { background: #2b313a; padding: 8px 12px; border-radius: 8px; align-self: flex-start; max-width: 80%; }
+    .user-msg { background: #f0b90b; color: #000; padding: 8px 12px; border-radius: 8px; align-self: flex-end; max-width: 80%; font-weight: 500; }
+    .chatbot-input { display: flex; padding: 10px; background: #181a20; gap: 5px; }
+    .chatbot-input input { flex: 1; padding: 8px; border: 1px solid #363c4e; background: #2b313a; color: #fff; border-radius: 4px; outline: none; }
+    .chatbot-input button { background: #f0b90b; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+  </style>
 </body>
 </html>
