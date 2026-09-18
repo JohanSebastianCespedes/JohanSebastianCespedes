@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -210,7 +209,7 @@
   <p>Welcome, I am passionate about financial markets, blockchain technology, and building automated trading strategies.</p>
 
   <hr>
-<img src="BITCOIN 2.jpg" width="1000" height="600" alt="Bitcoin Image">
+  <img src="BITCOIN 2.jpg" width="1000" height="600" alt="Bitcoin Image">
 
   <div class="section-card">
     <h3>📊 Market Interests & Expertise</h3>
@@ -239,7 +238,7 @@
   </ul>
 
   <hr>
-<img src="trading.jpg" width="100%" alt="Binance Image">
+  <img src="trading.jpg" width="100%" alt="Binance Image">
   
   <h2>📉 Conceptos Clave del Trading con Criptomonedas</h2>
   <p>El trading de criptomonedas consiste en especular sobre los movimientos de precio de los activos digitales mediante el estudio de la oferta y la demanda.</p>
@@ -326,7 +325,6 @@
 
   <hr>
 
-  
   <h2>🚦 Indicadores de Sentimiento: COMPRA vs VENTA</h2>
   <p>Monitoreo dual de presión compradora y vendedora basado en indicadores técnicos en tiempo real 🟢🔴</p>
 
@@ -432,7 +430,54 @@
         }
       }
     });
- <script>
-   </body>
-</style>
+
+    // 3. ECharts - Medidores de Sentimiento
+    const buyChart = echarts.init(document.getElementById('buyGauge'));
+    buyChart.setOption({
+      series: [{
+        type: 'gauge',
+        startAngle: 180,
+        endAngle: 0,
+        min: 0,
+        max: 100,
+        splitNumber: 5,
+        itemStyle: { color: '#0ecb81' },
+        progress: { show: true, width: 18 },
+        pointer: { icon: 'path://M12.8,0.7l12,40.1H0.7L12.8,0.7z', length: '12%', width: 10, offsetCenter: [0, '-60%'] },
+        axisLine: { lineStyle: { width: 18, color: [[1, '#30363d']] } },
+        axisTick: { show: false },
+        splitLine: { show: false },
+        axisLabel: { color: '#8b949e', distance: -40 },
+        detail: { valueAnimation: true, formatter: '{value}%', color: '#0ecb81', fontSize: 24, offsetCenter: [0, '-10%'] },
+        data: [{ value: 78, name: 'Fuerza Compra' }]
+      }]
+    });
+
+    const sellChart = echarts.init(document.getElementById('sellGauge'));
+    sellChart.setOption({
+      series: [{
+        type: 'gauge',
+        startAngle: 180,
+        endAngle: 0,
+        min: 0,
+        max: 100,
+        splitNumber: 5,
+        itemStyle: { color: '#f6465d' },
+        progress: { show: true, width: 18 },
+        pointer: { icon: 'path://M12.8,0.7l12,40.1H0.7L12.8,0.7z', length: '12%', width: 10, offsetCenter: [0, '-60%'] },
+        axisLine: { lineStyle: { width: 18, color: [[1, '#30363d']] } },
+        axisTick: { show: false },
+        splitLine: { show: false },
+        axisLabel: { color: '#8b949e', distance: -40 },
+        detail: { valueAnimation: true, formatter: '{value}%', color: '#f6465d', fontSize: 24, offsetCenter: [0, '-10%'] },
+        data: [{ value: 22, name: 'Fuerza Venta' }]
+      }]
+    });
+
+    window.addEventListener('resize', () => {
+      buyChart.resize();
+      sellChart.resize();
+    });
+  </script>
+</body>
 </html>
