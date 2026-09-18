@@ -4,10 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sebastián | Cripto Trading & Análisis de Mercados Digitales</title>
+
   <!-- CDN de Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <!-- CDN de ECharts -->
   <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
   <style>
     :root {
       --bg-color: #0d1117;
@@ -22,12 +26,17 @@
       --accent-red: #f6465d;
       --accent-gold: #f0b90b;
       --accent-blue: #58a6ff;
+      --accent-purple: #8a2be2;
+    }
+
+    * {
+      box-sizing: border-box;
     }
 
     body {
       background-color: var(--bg-color);
       color: var(--text-color);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       line-height: 1.6;
       padding: 30px;
       max-width: 950px;
@@ -79,6 +88,12 @@
       color: #79c0ff;
     }
 
+    img {
+      border-radius: 8px;
+      max-width: 100%;
+      height: auto;
+    }
+
     .section-card {
       background-color: var(--card-bg);
       border: 1px solid var(--border-color);
@@ -110,6 +125,9 @@
       font-size: 0.95rem;
       transition: all 0.2s;
       box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .btn-buy { background-color: var(--accent-green); color: #000; }
@@ -121,7 +139,8 @@
       width: 100%;
       border-collapse: collapse;
       margin: 20px 0;
-      overflow: hidden;
+      overflow-x: auto;
+      display: block;
       border-radius: 8px;
     }
 
@@ -142,6 +161,7 @@
       display: flex;
       gap: 10px;
       margin-bottom: 15px;
+      flex-wrap: wrap;
     }
 
     .tab-btn {
@@ -161,43 +181,302 @@
       color: var(--accent-gold);
     }
 
-    .media-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 15px;
-      margin: 20px 0;
-    }
-
-    .media-placeholder {
-      background-color: var(--card-bg);
-      border: 2px dashed var(--border-color);
-      border-radius: 8px;
-      padding: 30px 15px;
-      text-align: center;
-      color: var(--text-muted);
-      transition: border-color 0.2s;
-    }
-
-    .media-placeholder:hover {
-      border-color: var(--accent-gold);
-    }
-
     .gauge-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 20px;
     }
 
     .gauge-box {
-      height: 320px;
+      height: 280px;
+      width: 100%;
     }
 
-    pre {
-      background-color: var(--code-bg);
+    .chat-widget-toggle {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #f0b90b, #58a6ff);
+      color: #000;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(240, 185, 11, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      z-index: 1000;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .chat-widget-toggle:hover {
+      transform: scale(1.1) rotate(5deg);
+      box-shadow: 0 10px 30px rgba(88, 166, 255, 0.6);
+    }
+
+    .chat-badge {
+      position: absolute;
+      top: -2px;
+      right: -2px;
+      width: 16px;
+      height: 16px;
+      background-color: var(--accent-green);
+      border: 3px solid var(--bg-color);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(14, 203, 129, 0.7); }
+      70% { box-shadow: 0 0 0 10px rgba(14, 203, 129, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(14, 203, 129, 0); }
+    }
+
+    .chat-container {
+      position: fixed;
+      bottom: 95px;
+      right: 25px;
+      width: 380px;
+      max-width: calc(100vw - 40px);
+      height: 560px;
+      max-height: calc(100vh - 120px);
+      background-color: #121720;
       border: 1px solid var(--border-color);
+      border-radius: 16px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+      display: flex;
+      flex-direction: column;
+      z-index: 999;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(20px) scale(0.95);
+      pointer-events: none;
+      transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .chat-container.active {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: all;
+    }
+
+    .chat-header {
+      background: linear-gradient(90deg, #161b22, #1f242d);
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .chat-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .chat-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #f0b90b, #0ecb81);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #000;
+      font-weight: bold;
+    }
+
+    .chat-header-text h4 {
+      margin: 0;
+      color: #fff;
+      font-size: 0.95rem;
+    }
+
+    .chat-header-text p {
+      margin: 0;
+      font-size: 0.75rem;
+      color: var(--accent-green);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .chat-close-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: color 0.2s;
+    }
+
+    .chat-close-btn:hover {
+      color: #fff;
+    }
+
+    .chat-messages {
+      flex: 1;
       padding: 16px;
-      border-radius: 6px;
-      color: #79c0ff;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      scroll-behavior: smooth;
+    }
+
+    .chat-messages::-webkit-scrollbar {
+      width: 5px;
+    }
+    .chat-messages::-webkit-scrollbar-thumb {
+      background: var(--border-color);
+      border-radius: 4px;
+    }
+
+    .message {
+      max-width: 85%;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 0.88rem;
+      line-height: 1.45;
+      word-wrap: break-word;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .message.bot {
+      background-color: #1c212b;
+      color: var(--text-color);
+      border: 1px solid var(--border-color);
+      align-self: flex-start;
+      border-bottom-left-radius: 2px;
+    }
+
+    .message.user {
+      background: linear-gradient(135deg, #1f6feb, #238636);
+      color: #ffffff;
+      align-self: flex-end;
+      border-bottom-right-radius: 2px;
+    }
+
+    .badge-tag {
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.72rem;
+      font-weight: bold;
+      margin-right: 4px;
+      margin-bottom: 4px;
+    }
+
+    .badge-bull { background-color: rgba(14, 203, 129, 0.2); color: var(--accent-green); border: 1px solid var(--accent-green); }
+    .badge-bear { background-color: rgba(246, 70, 93, 0.2); color: var(--accent-red); border: 1px solid var(--accent-red); }
+    .badge-gold { background-color: rgba(240, 185, 11, 0.2); color: var(--accent-gold); border: 1px solid var(--accent-gold); }
+
+    .chat-quick-prompts {
+      padding: 8px 12px;
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      background-color: #161b22;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .chat-quick-prompts::-webkit-scrollbar {
+      height: 3px;
+    }
+
+    .prompt-chip {
+      white-space: nowrap;
+      background-color: #21262d;
+      border: 1px solid var(--border-color);
+      color: var(--link-color);
+      padding: 5px 10px;
+      border-radius: 14px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .prompt-chip:hover {
+      background-color: #30363d;
+      color: #fff;
+      border-color: var(--accent-blue);
+    }
+
+    .chat-input-area {
+      padding: 12px;
+      background-color: #161b22;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      gap: 8px;
+    }
+
+    .chat-input {
+      flex: 1;
+      background-color: #0d1117;
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 8px 14px;
+      color: #fff;
+      font-size: 0.88rem;
+      outline: none;
+    }
+
+    .chat-input:focus {
+      border-color: var(--accent-blue);
+    }
+
+    .chat-send-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background-color: var(--accent-blue);
+      border: none;
+      color: #000;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.2s;
+    }
+
+    .chat-send-btn:hover {
+      background-color: var(--accent-gold);
+    }
+
+    .typing-indicator {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 8px 12px;
+      background-color: #1c212b;
+      border-radius: 12px;
+      width: fit-content;
+      border: 1px solid var(--border-color);
+    }
+
+    .typing-dot {
+      width: 6px;
+      height: 6px;
+      background-color: var(--text-muted);
+      border-radius: 50%;
+      animation: bounce 1.4s infinite ease-in-out both;
+    }
+
+    .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+    .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+    @keyframes bounce {
+      0%, 80%, 100% { transform: scale(0); }
+      40% { transform: scale(1); }
     }
   </style>
 </head>
@@ -205,62 +484,62 @@
 
   <!-- Encabezado Principal -->
   <h1>🪙 Sebastián | Cripto Trading & Análisis de Mercados Digitales 📈</h1>
-  <p><strong>🚀 Crypto Trader & Developer</strong></p>
-  <p>Welcome, I am passionate about financial markets, blockchain technology, and building automated trading strategies.</p>
+  <p><strong>🚀 Crypto Trader & Quantitative Strategy Developer</strong></p>
+  <p>Bienvenido. Apasionado por los mercados financieros, la tecnología blockchain, el análisis técnico/macro y el desarrollo de bots algorítmicos.</p>
 
   <hr>
-  <img src="BITCOIN 2.jpg" width="1000" height="600" alt="Bitcoin Image">
+  <img src="https://placehold.co/950x350/161b22/f0b90b?text=BTC/USD+Advanced+Technical+Chart+Analysis" width="100%" alt="Bitcoin Analysis Banner">
 
   <div class="section-card">
-    <h3>📊 Market Interests & Expertise</h3>
+    <h3>📊 Áreas de Especialización y Experiencia</h3>
     <ul>
-      <li><strong>Cryptocurrencies:</strong> Bitcoin (BTC), Ethereum (ETH), and Altcoin analysis.</li>
-      <li><strong>Trading Style:</strong> Algorithmic trading, technical analysis, and risk management.</li>
-      <li><strong>Tools & Tech:</strong> Python (Pandas, NumPy), Pine Script (TradingView), and Crypto Exchange APIs.</li>
+      <li><strong>Criptomonedas:</strong> Análisis multi-temporal de BTC, ETH, SOL, BNB, XRP, ADA, AVAX y Altcoins emergentes.</li>
+      <li><strong>Estilos de Operativa:</strong> Trading algorítmico, Swing Trading, Scalping cuantitativo y Gestión estricta del riesgo.</li>
+      <li><strong>Herramientas & Tech:</strong> Python (Pandas, NumPy, Backtrader), Pine Script v5 (TradingView) y APIs de Exchs (Binance, Bybit).</li>
     </ul>
   </div>
 
   <div class="section-card">
-    <h3>💻 What I'm Working On</h3>
+    <h3>💻 Proyectos en Desarrollo</h3>
     <ul>
-      <li>🤖 Developing automated trading bots.</li>
-      <li>📊 Backtesting strategies using historical crypto data.</li>
-      <li>🧪 Exploring decentralized finance (DeFi) protocols.</li>
+      <li>🤖 <strong>Bots de Arbitraje & Trend-Following:</strong> Automatizados en Python consumiendo WebSockets en tiempo real.</li>
+      <li>📊 <strong>Backtesting Cuantitativo:</strong> Validación de estrategias históricas con métricas Sharpe/Sortino Ratio.</li>
+      <li>🧪 <strong>Protocolos DeFi & On-Chain:</strong> Monitoreo de liquidez, movimientos de ballenas y métricas MVRV Z-Score.</li>
     </ul>
   </div>
 
   <!-- Redes -->
-  <h3>🌐 Connect with Me</h3>
+  <h3>🌐 Conéctate Conmigo</h3>
   <ul>
-    <li>💼 <a href="https://your-linkedin-profile-link" target="_blank">LinkedIn</a></li>
-    <li>🐦 <a href="https://your-twitter-profile-link" target="_blank">Twitter/X</a></li>
-    <li>💬 Ask me about: <strong>Crypto, Trading Strategies, and Python</strong></li>
+    <li>💼 <a href="https://linkedin.com" target="_blank">LinkedIn Profile</a></li>
+    <li>🐦 <a href="https://twitter.com" target="_blank">Twitter / X (@SebaCryptoTrade)</a></li>
+    <li>💬 Pregúntame sobre: <strong>Estrategias Cuantitativas, Python, PineScript o la IA del Chatbot abajo ↘️</strong></li>
   </ul>
 
   <hr>
-  <img src="trading.jpg" width="100%" alt="Binance Image">
+  <img src="https://placehold.co/950x250/161b22/0ecb81?text=Trading+Orderflow+%26+Liquidity+Heatmap" width="100%" alt="Market Orderflow">
   
   <h2>📉 Conceptos Clave del Trading con Criptomonedas</h2>
-  <p>El trading de criptomonedas consiste en especular sobre los movimientos de precio de los activos digitales mediante el estudio de la oferta y la demanda.</p>
+  <p>Especulación inteligente en activos digitales mediante la lectura precisa de la oferta y demanda, acción del precio y flujo de órdenes.</p>
 
   <h3>1. Tipos de Operativa en el Mercado</h3>
   <ul>
-    <li><strong>Spot Trading (Mercado al Contado):</strong> Compra y posesión directa del activo.</li>
-    <li><strong>Trading de Futuros y Derivados:</strong> Operativa apalancada en mercados alcistas (<em>Long</em>) y bajistas (<em>Short</em>).</li>
-    <li><strong>Trading Algorítmico / Cuantitativo:</strong> Reglas automatizadas mediante código (Python / Pine Script).</li>
+    <li><strong>Spot Trading (Mercado al Contado):</strong> Compra y posesión directa del activo a largo/mediano plazo.</li>
+    <li><strong>Trading de Futuros y Derivados:</strong> Operativa apalancada con cobertura en escenarios alcistas (<em>Long</em>) y bajistas (<em>Short</em>).</li>
+    <li><strong>Trading Algorítmico / Cuantitativo:</strong> Ejecución sistemática sin sesgos emocionales guiada por reglas lógicas en código.</li>
   </ul>
 
   <h3>2. Pilar Fundamental: Gestión del Riesgo (Risk Management)</h3>
   <ul>
-    <li><strong>Ratio Riesgo/Beneficio (R/R):</strong> Ratio objetivo mínimo de 1:2 o 1:3.</li>
-    <li><strong>Stop Loss (SL) & Take Profit (TP):</strong> Puntos clave para control automático de pérdidas y ganancias.</li>
+    <li><strong>Ratio Riesgo/Beneficio (R/R):</strong> Mantener un objetivo mínimo de 1:2 o 1:3 para rentabilidad matemática positiva.</li>
+    <li><strong>Stop Loss (SL) & Take Profit (TP):</strong> Órdenes preprogramadas para protección del capital y recolección de ganancias.</li>
   </ul>
 
   <!-- Botones de Acción -->
   <div class="btn-container">
-    <button class="btn btn-buy">🟢 Comprar (Long)</button>
-    <button class="btn btn-sell">🔴 Vender (Short)</button>
-    <button class="btn btn-gold">⚙️ Gestión de Riesgo</button>
+    <button class="btn btn-buy"><i class="fa-solid fa-circle-arrow-up"></i> Comprar (Long)</button>
+    <button class="btn btn-sell"><i class="fa-solid fa-circle-arrow-down"></i> Vender (Short)</button>
+    <button class="btn btn-gold"><i class="fa-solid fa-shield-halved"></i> Gestión de Riesgo</button>
   </div>
 
   <hr>
@@ -274,7 +553,7 @@
         <th>Símbolo</th>
         <th>Tipo de Análisis</th>
         <th>Indicadores Clave</th>
-        <th>Función</th>
+        <th>Función en Portfolio</th>
       </tr>
     </thead>
     <tbody>
@@ -283,21 +562,35 @@
         <td><code>BTC</code></td>
         <td>Macro & On-Chain</td>
         <td>Dominancia, Halving, MVRV Z-Score</td>
-        <td>Reserva de Valor</td>
+        <td>Reserva de Valor / Núcleo</td>
       </tr>
       <tr>
         <td><strong>Ethereum</strong></td>
         <td><code>ETH</code></td>
         <td>Fundamental & DeFi</td>
         <td>Gas Fees, TVL, Staking Yields</td>
-        <td>Utilidad DApps</td>
+        <td>Infraestructura Smart Contracts</td>
       </tr>
       <tr>
         <td><strong>Solana</strong></td>
         <td><code>SOL</code></td>
         <td>Técnico & Alta Velocidad</td>
-        <td>RSI, MACD, TPS Network</td>
-        <td>Ecosistema Rápido</td>
+        <td>RSI, MACD, TPS, Volumen Dex</td>
+        <td>Ecosistema Rápido L1</td>
+      </tr>
+      <tr>
+        <td><strong>Binance Coin</strong></td>
+        <td><code>BNB</code></td>
+        <td>Ecosistema & Launchpads</td>
+        <td>Volumen Centralizado, Burn Rate</td>
+        <td>Utilidad de Exchange</td>
+      </tr>
+      <tr>
+        <td><strong>Chainlink</strong></td>
+        <td><code>LINK</code></td>
+        <td>Infraestructura Oráculos</td>
+        <td>CCIP, Adopción Institucional</td>
+        <td>Conectividad Web3/TradFi</td>
       </tr>
     </tbody>
   </table>
@@ -318,7 +611,7 @@
 
   <!-- Diagrama de Barras -->
   <h2>📊 Comparativa: Capitalización de Mercado</h2>
-  <p>Comparación del tamaño del mercado entre las 3 principales criptomonedas (Expresado en Billones de USD).</p>
+  <p>Comparación del tamaño de mercado estimado (en Billones de USD / USD Billions).</p>
   <div class="section-card">
     <canvas id="barChart"></canvas>
   </div>
@@ -326,7 +619,7 @@
   <hr>
 
   <h2>🚦 Indicadores de Sentimiento: COMPRA vs VENTA</h2>
-  <p>Monitoreo dual de presión compradora y vendedora basado en indicadores técnicos en tiempo real 🟢🔴</p>
+  <p>Monitoreo dual de presión compradora y vendedora basado en osciladores de mercado y flujo de órdenes 🟢🔴</p>
 
   <div class="gauge-grid">
     <div class="section-card">
@@ -336,6 +629,52 @@
     <div class="section-card">
       <h3 style="text-align: center; color: var(--accent-red);">🔴 Sentimiento de VENTA</h3>
       <div id="sellGauge" class="gauge-box"></div>
+    </div>
+  </div>
+
+  <!-- Chatbot Widget Flotante -->
+  <button class="chat-widget-toggle" id="chatToggle" title="Abrir Asistente Cripto IA">
+    <i class="fa-solid fa-robot"></i>
+    <span class="chat-badge"></span>
+  </button>
+
+  <div class="chat-container" id="chatContainer">
+    <div class="chat-header">
+      <div class="chat-title">
+        <div class="chat-avatar">
+          <i class="fa-solid fa-bolt"></i>
+        </div>
+        <div class="chat-header-text">
+          <h4>SebaCrypto AI Bot v2.5</h4>
+          <p><i class="fa-solid fa-circle" style="font-size:0.5rem;"></i> En línea | Multi-Asset IA</p>
+        </div>
+      </div>
+      <button class="chat-close-btn" id="chatClose"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <div class="chat-messages" id="chatMessages">
+      <div class="message bot">
+        👋 ¡Hola! Soy el asistente virtual de Sebastián. 
+        <br><br>
+        Puedo darte análisis e información sobre <strong>BTC, ETH, SOL, BNB, XRP, ADA, DOGE, AVAX, LINK, PEPE, SUI</strong>, además de estrategias de trading (DCA, Swing, Scalping), gestión de riesgo y bots en Python.
+        <br><br>
+        ¿Qué mercado o estrategia te gustaría explorar hoy?
+      </div>
+    </div>
+
+    <!-- Quick Prompts Scrollables -->
+    <div class="chat-quick-prompts">
+      <div class="prompt-chip" onclick="sendQuickPrompt('🔮 Predicción BTC')">🔮 Predicción BTC</div>
+      <div class="prompt-chip" onclick="sendQuickPrompt('🚀 ¿Qué altcoins analizar?')">🚀 Altcoins</div>
+      <div class="prompt-chip" onclick="sendQuickPrompt('🛡️ Gestión de riesgo')">🛡️ Riesgo</div>
+      <div class="prompt-chip" onclick="sendQuickPrompt('📈 Estrategia Swing Trading')">📈 Swing Trade</div>
+      <div class="prompt-chip" onclick="sendQuickPrompt('💡 ¿Qué es Solana?')">💡 ¿Qué es SOL?</div>
+      <div class="prompt-chip" onclick="sendQuickPrompt('⚙️ Bots con Python')">⚙️ Bots Python</div>
+    </div>
+
+    <div class="chat-input-area">
+      <input type="text" class="chat-input" id="chatInput" placeholder="Pregunta sobre BTC, SOL, DCA, Riesgo..." onkeydown="if(event.key==='Enter') sendMessage()">
+      <button class="chat-send-btn" onclick="sendMessage()"><i class="fa-solid fa-paper-plane"></i></button>
     </div>
   </div>
 
@@ -379,6 +718,7 @@
       },
       options: {
         responsive: true,
+        maintainAspectRatio: true,
         plugins: { legend: { labels: { color: '#c9d1d9' } } },
         scales: {
           x: { ticks: { color: '#8b949e' }, grid: { color: '#30363d' } },
@@ -403,19 +743,23 @@
     new Chart(ctxBar, {
       type: 'bar',
       data: {
-        labels: ['Bitcoin (BTC)', 'Ethereum (ETH)', 'Solana (SOL)'],
+        labels: ['Bitcoin (BTC)', 'Ethereum (ETH)', 'Solana (SOL)', 'BNB', 'Chainlink (LINK)'],
         datasets: [{
           label: 'Market Cap (Billones USD)',
-          data: [1300, 420, 75],
+          data: [1300, 420, 75, 85, 12],
           backgroundColor: [
             'rgba(240, 185, 11, 0.8)',
             'rgba(98, 126, 234, 0.8)',
-            'rgba(20, 241, 149, 0.8)'
+            'rgba(20, 241, 149, 0.8)',
+            'rgba(243, 186, 47, 0.8)',
+            'rgba(55, 91, 210, 0.8)'
           ],
           borderColor: [
             '#f0b90b',
             '#627eea',
-            '#14f195'
+            '#14f195',
+            '#f3ba2f',
+            '#375bd2'
           ],
           borderWidth: 1,
           borderRadius: 4
@@ -423,6 +767,7 @@
       },
       options: {
         responsive: true,
+        maintainAspectRatio: true,
         plugins: { legend: { labels: { color: '#c9d1d9' } } },
         scales: {
           x: { ticks: { color: '#c9d1d9', font: { weight: 'bold' } }, grid: { display: false } },
@@ -442,13 +787,13 @@
         max: 100,
         splitNumber: 5,
         itemStyle: { color: '#0ecb81' },
-        progress: { show: true, width: 18 },
-        pointer: { icon: 'path://M12.8,0.7l12,40.1H0.7L12.8,0.7z', length: '12%', width: 10, offsetCenter: [0, '-60%'] },
-        axisLine: { lineStyle: { width: 18, color: [[1, '#30363d']] } },
+        progress: { show: true, width: 16 },
+        pointer: { icon: 'path://M12.8,0.7l12,40.1H0.7L12.8,0.7z', length: '12%', width: 10, offsetCenter: [0, '-55%'] },
+        axisLine: { lineStyle: { width: 16, color: [[1, '#30363d']] } },
         axisTick: { show: false },
         splitLine: { show: false },
-        axisLabel: { color: '#8b949e', distance: -40 },
-        detail: { valueAnimation: true, formatter: '{value}%', color: '#0ecb81', fontSize: 24, offsetCenter: [0, '-10%'] },
+        axisLabel: { color: '#8b949e', distance: -35 },
+        detail: { valueAnimation: true, formatter: '{value}%', color: '#0ecb81', fontSize: 22, offsetCenter: [0, '-10%'] },
         data: [{ value: 78, name: 'Fuerza Compra' }]
       }]
     });
@@ -463,13 +808,13 @@
         max: 100,
         splitNumber: 5,
         itemStyle: { color: '#f6465d' },
-        progress: { show: true, width: 18 },
-        pointer: { icon: 'path://M12.8,0.7l12,40.1H0.7L12.8,0.7z', length: '12%', width: 10, offsetCenter: [0, '-60%'] },
-        axisLine: { lineStyle: { width: 18, color: [[1, '#30363d']] } },
+        progress: { show: true, width: 16 },
+        pointer: { icon: 'path://M12.8,0.7l12,40.1H0.7L12.8,0.7z', length: '12%', width: 10, offsetCenter: [0, '-55%'] },
+        axisLine: { lineStyle: { width: 16, color: [[1, '#30363d']] } },
         axisTick: { show: false },
         splitLine: { show: false },
-        axisLabel: { color: '#8b949e', distance: -40 },
-        detail: { valueAnimation: true, formatter: '{value}%', color: '#f6465d', fontSize: 24, offsetCenter: [0, '-10%'] },
+        axisLabel: { color: '#8b949e', distance: -35 },
+        detail: { valueAnimation: true, formatter: '{value}%', color: '#f6465d', fontSize: 22, offsetCenter: [0, '-10%'] },
         data: [{ value: 22, name: 'Fuerza Venta' }]
       }]
     });
@@ -478,6 +823,175 @@
       buyChart.resize();
       sellChart.resize();
     });
+
+    // 4. Lógica de IA para el Chatbot Avanzado
+    const chatToggle = document.getElementById('chatToggle');
+    const chatContainer = document.getElementById('chatContainer');
+    const chatClose = document.getElementById('chatClose');
+    const chatMessages = document.getElementById('chatMessages');
+    const chatInput = document.getElementById('chatInput');
+
+    chatToggle.addEventListener('click', () => {
+      chatContainer.classList.toggle('active');
+    });
+
+    chatClose.addEventListener('click', () => {
+      chatContainer.classList.remove('active');
+    });
+
+    function sendQuickPrompt(promptText) {
+      chatInput.value = promptText;
+      sendMessage();
+    }
+
+    // Base de conocimiento exhaustiva de criptomonedas y trading
+    const botKnowledge = [
+      {
+        keywords: ['btc', 'bitcoin', 'prediccion btc', 'halving', 'satoshis'],
+        response: `<span class="badge-tag badge-gold">BTC / Bitcoin</span><br>
+        <strong>Bitcoin (BTC)</strong> es el activo refugio y reserva de valor líder del mercado.<br>
+        • <strong>Estado Macro:</strong> Post-Halving de emisión.<br>
+        • <strong>Soportes Clave:</strong> $60,000 USD y $58,500 USD.<br>
+        • <strong>Resistencias:</strong> $68,500 USD y ATH ($73,700+).<br>
+        • <strong>Estrategia de Sebastián:</strong> Acumulación mediante DCA (Dollar Cost Averaging) en retrocesos de volumen a zona MVRV neutra.`
+      },
+      {
+        keywords: ['eth', 'ethereum', 'gas', 'vitalik', 'staking', 'layer2'],
+        response: `<span class="badge-tag badge-bull">ETH / Ethereum</span><br>
+        <strong>Ethereum (ETH)</strong> es la reina de los Smart Contracts y DeFi.<br>
+        • <strong>Métricas:</strong> Alto TVL en Layer 2s (Arbitrum, Optimism, Base).<br>
+        • <strong>Ventaja:</strong> Deflacionario en momentos de alta actividad de red (EIP-1559).<br>
+        • <strong>Enfoque Trading:</strong> Buscar setups en el par ETH/BTC en zonas de soporte histórico.`
+      },
+      {
+        keywords: ['sol', 'solana', 'tps', 'raydium', 'jup'],
+        response: `<span class="badge-tag badge-bull">SOL / Solana</span><br>
+        <strong>Solana (SOL)</strong> destaca por su ejecución ultra rápida y bajos costos de transacción.<br>
+        • <strong>Puntos Fuertes:</strong> Dominio masivo en volumen DEX de Memecoins y NFTs.<br>
+        • <strong>Análisis Técnico:</strong> Gran impulso alcista al superar los $135 USD con objetivo en los $180-$200 USD.`
+      },
+      {
+        keywords: ['bnb', 'binance', 'cz', 'launchpad'],
+        response: `<span class="badge-tag badge-gold">BNB / Binance Coin</span><br>
+        <strong>Binance Coin (BNB)</strong> respalda la red BNB Chain y otorga beneficios en Binance.<br>
+        • <strong>Catalizador:</strong> Participación constante en Launchpools y quemas trimestrales (Burn Mechanism).`
+      },
+      {
+        keywords: ['xrp', 'ripple', 'sec'],
+        response: `<span class="badge-tag badge-bear">XRP / Ripple</span><br>
+        <strong>XRP</strong> enfocado en pagos transfronterizos institucionales.<br>
+        • <strong>Atención:</strong> Altamente sensible a eventos legales de la SEC y alianzas bancarias.`
+      },
+      {
+        keywords: ['ada', 'cardano', 'hoskinson'],
+        response: `<span class="badge-tag badge-gold">ADA / Cardano</span><br>
+        <strong>Cardano (ADA)</strong> plataforma orientada a la revisión por pares y seguridad formal de código.<br>
+        • <strong>Comportamiento:</strong> Movimientos acumulativos lentos con explosiones fuertes de volatilidad.`
+      },
+      {
+        keywords: ['doge', 'dogecoin', 'pepe', 'memecoin', 'shib', 'memes'],
+        response: `<span class="badge-tag badge-bear">Memecoins (DOGE / PEPE / SHIB)</span><br>
+        Activos de extrema volatilidad impulsados por narrativa social.<br>
+        ⚠️ <strong>Regla de Gestión:</strong> No asignar más del 2% al 5% del portfolio en estas especulaciones y operar siempre con Stop Loss ajustado.`
+      },
+      {
+        keywords: ['link', 'chainlink', 'oraculo', 'ccip'],
+        response: `<span class="badge-tag badge-bull">LINK / Chainlink</span><br>
+        <strong>Chainlink</strong> es la red de oráculos estándar de la industria Web3.<br>
+        • <strong>Narrativa:</strong> Tokenización de Activos del Mundo Real (RWA) e interconectividad con Swift (CCIP).`
+      },
+      {
+        keywords: ['sui', 'avax', 'dot', 'altcoins', 'altcoin'],
+        response: `<span class="badge-tag badge-bull">Altcoins L1 / L2</span><br>
+        Monitoreamos activamente proyectos como <strong>SUI, AVAX y DOT</strong>.<br>
+        • <strong>Consejo:</strong> Diversificar entre narrativas fuertes (RWA, IA, Capa 1 rápidas) y evitar sobrecargar en activos correlacionados.`
+      },
+      {
+        keywords: ['riesgo', 'stop loss', 'position size', 'gestion', 'r/r', 'capital'],
+        response: `<span class="badge-tag badge-gold">🛡️ Regla de Oro de Gestión de Riesgo</span><br>
+        1. <strong>Nunca arriesgues más del 1% al 2%</strong> de tu capital total por operación.<br>
+        2. Mantén un Ratio <strong>Riesgo/Beneficio mínimo de 1:2</strong>.<br>
+        3. El <em>Stop Loss</em> es innegociable; define tu salida ANTES de entrar al mercado.`
+      },
+      {
+        keywords: ['swing', 'swing trading', 'estrategia', 'scalping', 'dca'],
+        response: `<span class="badge-tag badge-bull">📈 Estrategia Swing & Trend-Following</span><br>
+        • <strong>Timeframes:</strong> 4 Horas y Diario (4H / 1D).<br>
+        • <strong>Filtro:</strong> Medias Móviles EMA 50 y EMA 200.<br>
+        • <strong>Gatillo:</strong> Ruptura de estructura (BOS) + volumen confirmatorio en zonas de Order Block.`
+      },
+      {
+        keywords: ['bot', 'python', 'pine', 'pinescript', 'codigo', 'backtest', 'api'],
+        response: `<span class="badge-tag badge-gold">🤖 Desarrollo y Algoritmos</span><br>
+        Sebastián construye bots usando:<br>
+        • <strong>Python:</strong> Conectores con Binance/Bybit API, pandas-ta para indicadores y manejo de datos.<br>
+        • <strong>Pine Script v5:</strong> Alertas y estrategias en TradingView.<br>
+        Si deseas automatizar una estrategia, indícale las reglas al asistente.`
+      }
+    ];
+
+    function sendMessage() {
+      const text = chatInput.value.trim();
+      if (!text) return;
+
+      // Render mensaje del usuario
+      appendMessage(text, 'user');
+      chatInput.value = '';
+
+      // Mostrar indicador de carga "escribiendo..."
+      showTypingIndicator();
+
+      // Procesar respuesta con ligero retardo simulando pensamiento de IA
+      setTimeout(() => {
+        removeTypingIndicator();
+        const responseText = getBotResponse(text);
+        appendMessage(responseText, 'bot');
+      }, 700);
+    }
+
+    function appendMessage(content, sender) {
+      const msgDiv = document.createElement('div');
+      msgDiv.classList.add('message', sender);
+      msgDiv.innerHTML = content;
+      chatMessages.appendChild(msgDiv);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function showTypingIndicator() {
+      const typingDiv = document.createElement('div');
+      typingDiv.id = 'typingIndicator';
+      typingDiv.classList.add('typing-indicator');
+      typingDiv.innerHTML = `
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+      `;
+      chatMessages.appendChild(typingDiv);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function removeTypingIndicator() {
+      const typingDiv = document.getElementById('typingIndicator');
+      if (typingDiv) typingDiv.remove();
+    }
+
+    function getBotResponse(userText) {
+      const lower = userText.toLowerCase();
+
+      // Buscar coincidencias en la base de conocimientos
+      for (const item of botKnowledge) {
+        if (item.keywords.some(kw => lower.includes(kw))) {
+          return item.response;
+        }
+      }
+
+      // Respuesta por defecto con Inteligencia Contextual
+      return `💡 <strong>Entendido.</strong> He analizado tu consulta sobre "<em>${userText}</em>".<br><br>
+      Puedes preguntarme específicamente por:<br>
+      • Criptos: <strong>BTC, ETH, SOL, BNB, LINK, PEPE, ADA, XRP</strong><br>
+      • Operativa: <strong>Gestión de Riesgo, Swing Trading, Bots Python</strong><br><br>
+      ¿Te gustaría ver el análisis de alguna de estas opciones?`;
+    }
   </script>
 </body>
 </html>
